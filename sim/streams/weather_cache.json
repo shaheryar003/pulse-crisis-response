@@ -1,0 +1,18 @@
+{
+  "metadata": {"source": "cache", "cached_at": "2026-05-15T14:48:00Z", "ttl_minutes": 30},
+  "now": {
+    "temp_c": 28.5,
+    "feels_like_c": 30.5,
+    "heat_index_c": 30.0,
+    "humidity_pct": 55,
+    "wind_kmh": 12,
+    "rain_mmhr": 0.0,
+    "aqi": 92,
+    "conditions": "partly_cloudy"
+  },
+  "forecast_3h": [
+    {"offset_min": 60,  "rain_mmhr": 1, "temp_c": 29},
+    {"offset_min": 120, "rain_mmhr": 8, "temp_c": 28},
+    {"offset_min": 180, "rain_mmhr": 18, "temp_c": 27}
+  ]
+}

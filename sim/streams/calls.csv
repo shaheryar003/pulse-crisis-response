@@ -1,0 +1,13 @@
+call_id,ts,number_hash,zone,category,transcript_snippet,duration_s
+c001,2026-05-15T15:03:15Z,h_aa11,G-10,flood,"streets underwater near markaz",62
+c002,2026-05-15T15:04:50Z,h_bb22,G-10,flood,"car stuck in water G-10/4",45
+c003,2026-05-15T15:05:30Z,h_cc33,G-10,medical,"elderly fell in water, need ambulance",89
+c004,2026-05-15T15:06:40Z,h_dd44,G-10,traffic,"complete jam on Margalla Rd",30
+c005,2026-05-15T15:08:00Z,h_ee55,G-10,flood,"water still rising basements",55
+c006,2026-05-15T15:09:30Z,h_ff66,F-7-katchi,medical,"elderly woman heat stroke",110
+c007,2026-05-15T15:10:10Z,h_gg77,F-7-katchi,medical,"buzurg behoosh hain garmi se",75
+c008,2026-05-15T15:11:25Z,h_hh88,F-7-katchi,medical,"child has heat exhaustion",65
+c009,2026-05-15T15:13:00Z,h_ii99,G-10,utility,"think it's a broken water pipe not rain",95
+c010,2026-05-15T15:14:30Z,h_jj00,G-10,utility,"WASA needed, pipe burst near Markaz",80
+c011,2026-05-15T15:15:45Z,h_kk11,F-7-katchi,medical,"another heat stroke case",70
+c012,2026-05-15T15:17:00Z,h_ll22,G-10,utility,"yes it is a burst pipe confirmed",100

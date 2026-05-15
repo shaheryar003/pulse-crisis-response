@@ -1,0 +1,47 @@
+{
+  "hospitals": [
+    {"id": "h_pims", "name": "PIMS Hospital", "zone": "G-8", "geo": {"lat": 33.708, "lon": 73.054}, "capacity_beds": 1200, "trauma_bays": 24, "icu": 80, "specialties": ["trauma", "burn", "cardiac"]},
+    {"id": "h_polyclinic", "name": "Polyclinic Hospital", "zone": "G-6", "geo": {"lat": 33.705, "lon": 73.078}, "capacity_beds": 650, "trauma_bays": 12, "icu": 40, "specialties": ["general", "trauma"]},
+    {"id": "h_kahuta", "name": "Kahuta DHQ", "zone": "Bara-Kahu", "geo": {"lat": 33.732, "lon": 73.157}, "capacity_beds": 220, "trauma_bays": 4, "icu": 8, "specialties": ["general"]},
+    {"id": "h_shifa", "name": "Shifa International", "zone": "H-8", "geo": {"lat": 33.685, "lon": 73.065}, "capacity_beds": 500, "trauma_bays": 16, "icu": 50, "specialties": ["trauma", "neuro", "cardiac"]},
+    {"id": "h_kruh", "name": "KRL Hospital", "zone": "G-9", "geo": {"lat": 33.694, "lon": 73.026}, "capacity_beds": 300, "trauma_bays": 8, "icu": 20, "specialties": ["general", "pediatric"]},
+    {"id": "h_quaid", "name": "Quaid-e-Azam Int. Hospital", "zone": "Sector-D-12", "geo": {"lat": 33.724, "lon": 72.951}, "capacity_beds": 280, "trauma_bays": 6, "icu": 16, "specialties": ["general"]},
+    {"id": "h_pakistan", "name": "Pakistan Railways Hospital", "zone": "I-9", "geo": {"lat": 33.679, "lon": 73.025}, "capacity_beds": 180, "trauma_bays": 4, "icu": 10, "specialties": ["general"]}
+  ],
+  "fire_stations": [
+    {"id": "fs_1", "name": "F-8 Fire Station", "zone": "F-8", "geo": {"lat": 33.726, "lon": 73.044}, "units": 4},
+    {"id": "fs_2", "name": "Aabpara Fire Station", "zone": "G-6", "geo": {"lat": 33.708, "lon": 73.084}, "units": 3},
+    {"id": "fs_3", "name": "I-10 Fire Station", "zone": "I-10", "geo": {"lat": 33.674, "lon": 73.004}, "units": 3},
+    {"id": "fs_4", "name": "Bara Kahu Fire Station", "zone": "Bara-Kahu", "geo": {"lat": 33.730, "lon": 73.155}, "units": 2}
+  ],
+  "police_stations": [
+    {"id": "ps_aabpara", "name": "Aabpara PS", "zone": "G-6", "geo": {"lat": 33.706, "lon": 73.085}},
+    {"id": "ps_kohsar", "name": "Kohsar PS", "zone": "F-6", "geo": {"lat": 33.733, "lon": 73.080}},
+    {"id": "ps_industrial", "name": "Industrial Area PS", "zone": "I-9", "geo": {"lat": 33.678, "lon": 73.024}},
+    {"id": "ps_margalla", "name": "Margalla PS", "zone": "F-8", "geo": {"lat": 33.725, "lon": 73.041}},
+    {"id": "ps_shahzad", "name": "Shahzad Town PS", "zone": "Rawal-Town", "geo": {"lat": 33.692, "lon": 73.122}},
+    {"id": "ps_tarnol", "name": "Tarnol PS", "zone": "Tarnol", "geo": {"lat": 33.654, "lon": 72.871}}
+  ],
+  "depots": [
+    {"id": "depot_central", "name": "Central Emergency Depot", "zone": "G-8", "geo": {"lat": 33.701, "lon": 73.046}},
+    {"id": "depot_north", "name": "North Depot (F-10)", "zone": "F-10", "geo": {"lat": 33.708, "lon": 73.008}},
+    {"id": "depot_south", "name": "South Depot (I-10)", "zone": "I-10", "geo": {"lat": 33.673, "lon": 73.004}},
+    {"id": "depot_east", "name": "East Depot (Rawal)", "zone": "Rawal-Town", "geo": {"lat": 33.690, "lon": 73.124}}
+  ],
+  "shelters": [
+    {"id": "shel_pims", "name": "PIMS Auditorium", "zone": "G-8", "geo": {"lat": 33.710, "lon": 73.052}, "capacity": 800},
+    {"id": "shel_g10", "name": "G-10 Community Centre", "zone": "G-10", "geo": {"lat": 33.695, "lon": 73.005}, "capacity": 600},
+    {"id": "shel_i9", "name": "I-9 Workers' Hall", "zone": "I-9", "geo": {"lat": 33.682, "lon": 73.022}, "capacity": 400},
+    {"id": "shel_f7", "name": "F-7 Markaz Hall", "zone": "F-7", "geo": {"lat": 33.728, "lon": 73.065}, "capacity": 500},
+    {"id": "shel_bara", "name": "Bara Kahu Govt Higher Sec School", "zone": "Bara-Kahu", "geo": {"lat": 33.733, "lon": 73.160}, "capacity": 700}
+  ],
+  "cooling_centers": [
+    {"id": "cc_f7", "name": "F-7 Cooling Center", "zone": "F-7", "geo": {"lat": 33.727, "lon": 73.064}, "capacity": 200},
+    {"id": "cc_g10", "name": "G-10 Cooling Center", "zone": "G-10", "geo": {"lat": 33.696, "lon": 73.006}, "capacity": 150}
+  ],
+  "utility_providers": [
+    {"id": "wasa", "name": "WASA Islamabad", "phone": "1334", "type": "water"},
+    {"id": "iesco", "name": "IESCO", "phone": "118", "type": "power"},
+    {"id": "sngpl", "name": "SNGPL", "phone": "1199", "type": "gas"}
+  ]
+}

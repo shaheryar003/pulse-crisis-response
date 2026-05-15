@@ -1,0 +1,20 @@
+{
+  "by_zone_type": {
+    "G-10:flood": {"freq_per_year": 4.2, "avg_duration_h": 5.5, "worst_case": {"date": "2024-08-12", "casualties": 0, "displaced": 1200, "peak_water_cm": 130}},
+    "G-10:water_main_burst": {"freq_per_year": 1.8, "avg_duration_h": 6.0, "worst_case": {"date": "2025-03-04", "casualties": 0, "displaced": 0, "duration_h": 11}},
+    "F-7-katchi:heatwave": {"freq_per_year": 3.5, "avg_duration_h": 8.0, "worst_case": {"date": "2024-06-12", "hospitalizations": 12, "fatalities": 1}},
+    "F-7-katchi:fire": {"freq_per_year": 0.6, "avg_duration_h": 4.0, "worst_case": {"date": "2023-12-02", "casualties": 0, "displaced": 60}},
+    "I-9:fire": {"freq_per_year": 1.4, "avg_duration_h": 3.5, "worst_case": {"date": "2025-09-22", "casualties": 2, "displaced": 0}},
+    "I-9:power_outage": {"freq_per_year": 6.0, "avg_duration_h": 2.0, "worst_case": {"date": "2024-07-08", "duration_h": 8}},
+    "Bara-Kahu:flood": {"freq_per_year": 2.8, "avg_duration_h": 9.0, "worst_case": {"date": "2024-08-15", "displaced": 400}},
+    "Tarnol:accident": {"freq_per_year": 8.0, "avg_duration_h": 1.2},
+    "Blue-Area:public_disorder": {"freq_per_year": 1.5, "avg_duration_h": 4.0}
+  },
+  "incidents": [
+    {"id": "hist_001", "ts": "2024-08-12T13:00:00Z", "zone": "G-10", "type": "flood", "severity": 4, "duration_h": 6, "displaced": 1200, "lessons": ["evacuation routes inadequate", "shelter underprepared"]},
+    {"id": "hist_002", "ts": "2025-03-04T09:30:00Z", "zone": "G-10", "type": "water_main_burst", "severity": 2, "duration_h": 11, "lessons": ["initially misclassified as flood", "WASA response slow"]},
+    {"id": "hist_003", "ts": "2024-06-12T15:00:00Z", "zone": "F-7-katchi", "type": "heatwave", "severity": 4, "duration_h": 14, "hospitalizations": 12, "fatalities": 1, "lessons": ["cooling center distance was the bottleneck"]},
+    {"id": "hist_004", "ts": "2024-08-15T11:00:00Z", "zone": "Bara-Kahu", "type": "flood", "severity": 3, "duration_h": 12, "displaced": 400, "lessons": ["landslide risk concurrent"]},
+    {"id": "hist_005", "ts": "2025-09-22T22:00:00Z", "zone": "I-9", "type": "fire", "severity": 3, "duration_h": 5, "lessons": ["industrial hazmat present"]}
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Crisis Scenario Manifest",
+  "type": "object",
+  "required": ["id", "name", "description", "start_ts", "events"],
+  "properties": {
+    "id": {"type": "string"},
+    "name": {"type": "string"},
+    "description": {"type": "string"},
+    "start_ts": {"type": "string", "format": "date-time"},
+    "duration_min": {"type": "integer"},
+    "weather_overrides": {"type": "object"},
+    "api_overrides": {
+      "type": "object",
+      "properties": {
+        "weather": {"enum": ["live", "cache", "down"]},
+        "traffic": {"enum": ["live", "cache", "down"]}
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["offset_min", "kind"],
+        "properties": {
+          "offset_min": {"type": "number"},
+          "kind": {"enum": ["social_post", "sensor_reading", "emergency_call", "weather_tick", "traffic_tick", "field_report", "operator_override"]},
+          "payload": {"type": "object"}
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "properties": {
+        "incidents": {"type": "array"},
+        "dispatches_min": {"type": "integer"},
+        "alerts_emitted": {"type": "integer"},
+        "recalls": {"type": "integer"}
+      }
+    }
+  }
+}

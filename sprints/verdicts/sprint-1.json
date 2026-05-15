@@ -1,0 +1,18 @@
+{
+  "agent": "verifier",
+  "skill_version": "1.0.0",
+  "sprint": 1,
+  "ts": "2026-05-15T15:30:00Z",
+  "verdict": "pass",
+  "criteria": [
+    {"id": "artifact_present:.agent/skills/*/SKILL.md count==20", "status": "pass", "evidence": "20 skills present: pm, verifier, commander + 17 specialists across 7 tiers", "must": true},
+    {"id": "schema_valid:frontmatter", "status": "pass", "evidence": "all SKILL.md files have name, description, metadata.type, metadata.version, metadata.tier", "must": true},
+    {"id": "manual_review:output_envelope_present", "status": "pass", "evidence": "every specialist defines its output envelope JSON schema", "must": true},
+    {"id": "manual_review:commander_routing", "status": "pass", "evidence": "commander/SKILL.md includes the full tier1→tier7 routing table with triggers", "must": true},
+    {"id": "manual_review:scoring_formulas", "status": "pass", "evidence": "credibility (social), severity rubric (classifier), priority score (prioritizer), allocation cost (allocator), vulnerability index (historical), Monte Carlo bands (forecaster), trust updates (learning) all present with coefficients", "must": true},
+    {"id": "manual_review:worked_examples", "status": "pass", "evidence": "Commander includes Round-1 walkthrough; other agents include sample emissions with concrete numbers", "must": false}
+  ],
+  "remediation": [],
+  "confidence": 0.93,
+  "notes": "Sprint 1 specialist fleet fully authored. Skills are structurally consistent, scoring math is explicit and auditable, recovery and learning loops are wired."
+}

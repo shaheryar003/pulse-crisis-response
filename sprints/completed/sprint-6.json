@@ -1,0 +1,7 @@
+{
+  "agent": "pm",
+  "sprint": 6,
+  "closed_at": "2026-05-15T17:05:30Z",
+  "verdict": "pass",
+  "summary": "All 4 scenarios scripted and validated end-to-end via deterministic demo orchestrator. Outcomes: A→2 incidents/10 dispatches; B→4 incidents/18 dispatches; C→retraction with audit chain; D→degraded-mode survives weather API outage."
+}

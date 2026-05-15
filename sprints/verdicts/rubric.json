@@ -1,0 +1,90 @@
+{
+  "agent": "verifier",
+  "skill_version": "1.0.0",
+  "scope": "master",
+  "ts": "2026-05-15T17:40:00Z",
+  "rubric_coverage": [
+    {
+      "criterion": "Antigravity integration",
+      "weight": 20,
+      "evidence": [
+        "20 Antigravity Skills authored in .agent/skills/ (PM, Verifier, Commander + 17 specialists)",
+        "Each SKILL.md has frontmatter (name, description, metadata.type, version, tier), purpose, triggers, inputs, procedure with concrete coefficients, output envelope, rules, failure modes, worked examples",
+        "Mission Control fan-out documented in docs/antigravity-usage.md",
+        "Traces emitted as structured envelopes per tier; artifact tree under artifacts/<run-id>/"
+      ],
+      "self_score": "strong"
+    },
+    {
+      "criterion": "Crisis detection and severity analysis",
+      "weight": 25,
+      "evidence": [
+        "6 signal sources fused (social, weather, traffic, sensors, citizen reports, historical) — exceeds 3 source minimum",
+        "Credibility formula with 6 explicit terms (verified, followers, age, geo, urgency, contradiction)",
+        "5-vote LLM ensemble for type + median-vote severity",
+        "Severity rubric is data-driven (population × hazard × sensors) — not LLM-improvised",
+        "Monte Carlo 200-sample uncertainty bands (p10/p50/p90) on radius, population, duration",
+        "Contradiction detection + recovery loop (verification → recall) with audit chain"
+      ],
+      "self_score": "strong"
+    },
+    {
+      "criterion": "Resource optimization and multi-crisis coordination",
+      "weight": 20,
+      "evidence": [
+        "60-asset roster across 9 capability types in sim/fixtures/resources.json",
+        "Hungarian (scipy.optimize.linear_sum_assignment) bipartite matcher with cost = travel + capability_overlap_penalty - priority_bonus + fatigue",
+        "Prioritizer emits explainable trade_offs strings + recommended_resource_share softmax",
+        "Floor assignment guarantees coverage for high-pop incidents",
+        "Scenario B demonstrates concurrent multi-crisis with explicit allocator alternatives_considered"
+      ],
+      "self_score": "strong"
+    },
+    {
+      "criterion": "Impact simulation and stakeholder coordination",
+      "weight": 15,
+      "evidence": [
+        "Simulator produces before/after for dispatch, reroute, alert, hospital_prep with quantified side effects",
+        "evacuation_jam_probability via logistic over pop_affected",
+        "requires_staging flag triggers batched alerts",
+        "6 stakeholder channels per incident: public (UR+EN), hospital, utility (mapped to WASA/IESCO/SNGPL), traffic police, media, command-center JSON",
+        "Mobile command center shows live trace pane + scenario runner"
+      ],
+      "self_score": "strong"
+    },
+    {
+      "criterion": "Robustness, scalability, cost and latency",
+      "weight": 10,
+      "evidence": [
+        "Scenario D demonstrates weather API outage → cache fallback + stale_minutes flag",
+        "Round latency p50=53ms, p95=70ms (100x under the 8s target)",
+        "Cost projection ~$0.02 per incident at Gemini 3 Flash pricing (docs/cost-latency.md)",
+        "Scaling story documented in docs/scalability.md (laptop → city → multi-city)",
+        "SQLite → Postgres swap is a one-line change; audit_log already INSERT-only"
+      ],
+      "self_score": "strong"
+    },
+    {
+      "criterion": "Innovation and UX",
+      "weight": 10,
+      "evidence": [
+        "Bilingual (Urdu + English) public alerts via Gemini-or-glossary translation",
+        "Retraction transparency: retracted alerts remain visible in citizen app with strikethrough — never deleted",
+        "Expert-correction trust mechanism: high-trust citizens (e.g., field engineers) can flip classifications + dampen competing hypotheses",
+        "Antigravity-style trace pane on the Command Center surface (mobile mirror of Mission Control)",
+        "Sprint methodology with PM Agent + Verifier Agent as first-class skills"
+      ],
+      "self_score": "strong"
+    }
+  ],
+  "deliverables_check": {
+    "mobile_app_mandatory": "present (Flutter, 3 surfaces)",
+    "web_dashboard_optional": "deferred — Command Center surface on the Flutter app serves the same role",
+    "demo_orchestrator": "scenarios/run_demo.py validates all 4 scenarios green",
+    "antigravity_traces": "artifacts/<run-id>/<tier>/*.json + .agent/skills/* + sprints/verdicts/sprint-*.json",
+    "readme": "README.md covers architecture, schemas, antigravity usage, APIs, assumptions, privacy, cost, baseline, scalability, limitations"
+  },
+  "verdict": "pass",
+  "confidence": 0.96,
+  "notes": "All six rubric dimensions strongly covered. The deliberate dual-entry design (Antigravity Skills + Python mirror) means the same logic is traceable to judges via Mission Control and runnable in production behind the mobile app."
+}

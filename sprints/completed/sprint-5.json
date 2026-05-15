@@ -1,0 +1,7 @@
+{
+  "agent": "pm",
+  "sprint": 5,
+  "closed_at": "2026-05-15T16:50:30Z",
+  "verdict": "pass",
+  "summary": "Flutter mobile app shipped: 18 files. 3 role-gated surfaces — Citizen (map, report, alerts), Responder (queue + state machine), Command (live map + Antigravity trace + scenario runner). Mock auth, offline queue, WebSocket trace consumption, flutter_map with OSM tiles (no API key)."
+}

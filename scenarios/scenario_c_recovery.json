@@ -1,0 +1,35 @@
+{
+  "id": "C",
+  "name": "G-10 recovery — flood reclassified as water main burst",
+  "description": "Initial signals point to flood. A field-engineer report with high trust contradicts the consensus and forces the system to retract the public alert, recall responders, escalate to WASA, and emit an audit log.",
+  "start_ts": "2026-05-15T15:00:00Z",
+  "duration_min": 30,
+  "api_overrides": {"weather": "live", "traffic": "live"},
+  "weather_overrides": {
+    "G-10": {"rain_mmhr": 47}
+  },
+  "events": [
+    {"offset_min": 2, "kind": "social_post", "payload": {"signal_id_ref": "s001"}},
+    {"offset_min": 3, "kind": "social_post", "payload": {"signal_id_ref": "s002"}},
+    {"offset_min": 4, "kind": "social_post", "payload": {"signal_id_ref": "s003"}},
+    {"offset_min": 5, "kind": "social_post", "payload": {"signal_id_ref": "s007"}},
+    {"offset_min": 12, "kind": "field_report", "payload": {
+      "report_id": "fr_engr_zaid",
+      "user_id": "engineer_zaid",
+      "user_trust": 0.92,
+      "category": "water_main_burst",
+      "description": "Water gushing from a fixed point at G-10/4. Pressure pattern matches main rupture, not rainfall. Recommend WASA dispatch.",
+      "geo": {"lat": 33.696, "lon": 73.005, "accuracy_m": 5},
+      "media": [{"type": "photo", "url": "main_burst.jpg"}],
+      "ts": "2026-05-15T15:14:00Z"
+    }}
+  ],
+  "expected": {
+    "incidents": [
+      {"zone": "G-10", "type_initial": "flood", "type_final": "water_main_burst"}
+    ],
+    "dispatches_min": 2,
+    "alerts_emitted": 1,
+    "recalls": 1
+  }
+}

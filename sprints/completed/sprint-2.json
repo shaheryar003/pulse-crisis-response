@@ -1,0 +1,12 @@
+{
+  "agent": "pm",
+  "sprint": 2,
+  "closed_at": "2026-05-15T15:43:00Z",
+  "verdict": "pass",
+  "summary": "Data + simulation layer in place. Islamabad geo fixture covers 31 sectors with vulnerability index. 60-asset resource roster across 9 capability types. All 6 signal streams populated. Replay engine validates and dry-runs scenario A.",
+  "lessons": [
+    "Embedding scenario_id_refs in events lets replay reference canonical social posts rather than duplicating payloads.",
+    "Vulnerability index computed up-front avoids recomputation in every round."
+  ],
+  "unblocks": "sprint 3"
+}

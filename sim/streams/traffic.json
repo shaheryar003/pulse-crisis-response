@@ -1,0 +1,16 @@
+{
+  "metadata": {"source": "mapbox_mirror", "fetched_at": "2026-05-15T15:00:00Z"},
+  "corridors": [
+    {"corridor_id": "c_margalla", "current_eta_s": 480, "delta": 0.0},
+    {"corridor_id": "c_kashmir", "current_eta_s": 740, "delta": 0.028},
+    {"corridor_id": "c_islamabad_hwy", "current_eta_s": 950, "delta": 0.056},
+    {"corridor_id": "c_srinagar", "current_eta_s": 1380, "delta": 0.045},
+    {"corridor_id": "c_seventh", "current_eta_s": 380, "delta": 0.056},
+    {"corridor_id": "c_ninth", "current_eta_s": 420, "delta": 0.0},
+    {"corridor_id": "c_eleventh", "current_eta_s": 560, "delta": 0.037},
+    {"corridor_id": "c_jinnah", "current_eta_s": 310, "delta": 0.033},
+    {"corridor_id": "c_ibn_sina", "current_eta_s": 360, "delta": 0.0},
+    {"corridor_id": "c_park", "current_eta_s": 620, "delta": 0.033},
+    {"corridor_id": "c_kahuta", "current_eta_s": 555, "delta": 0.028}
+  ]
+}

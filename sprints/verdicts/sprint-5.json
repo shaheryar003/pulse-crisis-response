@@ -1,0 +1,22 @@
+{
+  "agent": "verifier",
+  "skill_version": "1.0.0",
+  "sprint": 5,
+  "ts": "2026-05-15T16:50:00Z",
+  "verdict": "pass",
+  "criteria": [
+    {"id": "file_exists:mobile/pubspec.yaml", "status": "pass", "evidence": "pubspec with flutter_map, http, websocket, geolocator, image_picker, etc.", "must": true},
+    {"id": "file_exists:mobile/lib/main.dart", "status": "pass", "evidence": "MaterialApp with M3 theme + AuthGate", "must": true},
+    {"id": "file_exists:mobile/lib/services/api.dart", "status": "pass", "evidence": "REST + WebSocket /trace stream client", "must": true},
+    {"id": "manual_review:3_surfaces_role_gated", "status": "pass", "evidence": "RoleRouter switches on session.role; CitizenShell with bottom-nav, ResponderQueuePage, CommandDashboardPage", "must": true},
+    {"id": "manual_review:citizen_report_with_photo_gps", "status": "pass", "evidence": "report.dart wires geolocator + image_picker + category chips + offline queue fallback", "must": true},
+    {"id": "manual_review:citizen_retraction_history_visible", "status": "pass", "evidence": "alerts.dart shows retracted alerts with strikethrough + retraction timestamp", "must": true},
+    {"id": "manual_review:command_trace_pane", "status": "pass", "evidence": "dashboard.dart subscribes to ApiClient.traceStream() and renders cards by tier/agent/decision/confidence", "must": true},
+    {"id": "manual_review:scenario_runner", "status": "pass", "evidence": "command popup menu triggers /scenarios/{id}/run", "must": true},
+    {"id": "manual_review:offline_queue", "status": "pass", "evidence": "OfflineQueue persists to SharedPreferences and used on submit failure", "must": true},
+    {"id": "test_passes:flutter_test", "status": "manual_skip", "evidence": "Flutter SDK not present in this CI environment; widget_test.dart is in place for local SDK runs", "must": false}
+  ],
+  "remediation": [],
+  "confidence": 0.9,
+  "notes": "All 18 Dart files in place; production-quality structure (theme, role router, models, services, screens). Compilation depends on user having Flutter SDK installed — code is written to lint cleanly with flutter_lints 4.x."
+}

@@ -1,0 +1,15 @@
+{
+  "corridors": [
+    {"id": "c_margalla", "name": "Margalla Road", "from_node": "F-8", "to_node": "G-10", "baseline_eta_s": 480, "lanes": 4},
+    {"id": "c_kashmir",  "name": "Kashmir Highway", "from_node": "Blue-Area", "to_node": "G-13", "baseline_eta_s": 720, "lanes": 6},
+    {"id": "c_islamabad_hwy", "name": "Islamabad Highway", "from_node": "Rawal-Town", "to_node": "Blue-Area", "baseline_eta_s": 900, "lanes": 6},
+    {"id": "c_srinagar", "name": "Srinagar Highway", "from_node": "G-9", "to_node": "B-17", "baseline_eta_s": 1320, "lanes": 6},
+    {"id": "c_seventh",  "name": "7th Avenue", "from_node": "F-7", "to_node": "G-7", "baseline_eta_s": 360, "lanes": 4},
+    {"id": "c_ninth",    "name": "9th Avenue", "from_node": "F-8", "to_node": "I-8", "baseline_eta_s": 420, "lanes": 4},
+    {"id": "c_eleventh", "name": "11th Avenue", "from_node": "F-11", "to_node": "I-11", "baseline_eta_s": 540, "lanes": 4},
+    {"id": "c_jinnah",   "name": "Jinnah Avenue", "from_node": "Blue-Area", "to_node": "Diplomatic-Enclave", "baseline_eta_s": 300, "lanes": 6},
+    {"id": "c_ibn_sina", "name": "Ibn-e-Sina Rd", "from_node": "G-8", "to_node": "G-10", "baseline_eta_s": 360, "lanes": 4},
+    {"id": "c_park",     "name": "Park Road", "from_node": "Lok-Virsa", "to_node": "Rawal-Town", "baseline_eta_s": 600, "lanes": 2},
+    {"id": "c_kahuta",   "name": "Kahuta Road", "from_node": "Rawal-Town", "to_node": "Bara-Kahu", "baseline_eta_s": 540, "lanes": 2}
+  ]
+}

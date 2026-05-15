@@ -1,0 +1,22 @@
+{
+  "agent": "verifier",
+  "skill_version": "1.0.0",
+  "sprint": 3,
+  "ts": "2026-05-15T16:05:00Z",
+  "verdict": "pass",
+  "criteria": [
+    {"id": "file_exists:backend/app/agents/base.py", "status": "pass", "evidence": "Envelope + Agent + ArtifactSink", "must": true},
+    {"id": "file_exists:backend/app/agents/commander.py", "status": "pass", "evidence": "Orchestrator runs tier1->tier7", "must": true},
+    {"id": "file_exists:ingest/*.py", "status": "pass", "evidence": "social, weather, traffic, sensor, citizen, historical", "must": true},
+    {"id": "file_exists:fusion/verification/classifier/severity/prioritizer/allocator/simulation/dispatch/comms/recall/learning.py", "status": "pass", "evidence": "all present", "must": true},
+    {"id": "file_exists:services/llm.py + geo.py + loader.py", "status": "pass", "evidence": "mock LLM, pure-Python PIP, fixture loaders", "must": true},
+    {"id": "test_passes:pytest", "status": "pass", "evidence": "10 tests pass in 1.08s (envelope, social, fusion, allocator, end-to-end pipeline, recovery flip)", "must": true},
+    {"id": "test_passes:commander_scenario_a", "status": "pass", "evidence": "python -m backend.app.agents.commander --scenario scenarios/scenario_a_flood.json => 2 incidents, 10 dispatches, 12 messages", "must": true},
+    {"id": "manual_review:allocator_feasibility", "status": "pass", "evidence": "Hungarian assignment returns feasible coverage for flood+heatwave", "must": true},
+    {"id": "manual_review:recovery_flip", "status": "pass", "evidence": "test_recovery_flips_to_water_main passes — expert correction overrides flood with audit log", "must": true},
+    {"id": "manual_review:envelope_compliance", "status": "pass", "evidence": "every emitted artifact carries the standard envelope subobject", "must": false}
+  ],
+  "remediation": [],
+  "confidence": 0.95,
+  "notes": "All Python agents implemented and tested. Pipeline runs offline-deterministic; Gemini-ready when GEMINI_API_KEY set."
+}

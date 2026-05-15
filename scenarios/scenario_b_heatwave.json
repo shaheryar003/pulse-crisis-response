@@ -1,0 +1,32 @@
+{
+  "id": "B",
+  "name": "F-7 katchi abadi heatwave (concurrent with A)",
+  "description": "Heat sensors + social posts + emergency calls converge on an informal settlement. High vulnerability index. Demonstrates multi-crisis trade-off with Scenario A.",
+  "start_ts": "2026-05-15T15:00:00Z",
+  "duration_min": 30,
+  "api_overrides": {"weather": "live", "traffic": "live"},
+  "weather_overrides": {
+    "F-7-katchi": {"heat_index_c": 45, "rain_mmhr": 0}
+  },
+  "events": [
+    {"offset_min": 1, "kind": "sensor_reading", "payload": {"sensor_id": "temp_f7", "value": 42.8, "type": "heat_index"}},
+    {"offset_min": 2, "kind": "social_post", "payload": {"signal_id_ref": "s009"}},
+    {"offset_min": 3, "kind": "social_post", "payload": {"signal_id_ref": "s010"}},
+    {"offset_min": 3, "kind": "sensor_reading", "payload": {"sensor_id": "temp_f7", "value": 43.4, "type": "heat_index"}},
+    {"offset_min": 4, "kind": "social_post", "payload": {"signal_id_ref": "s011"}},
+    {"offset_min": 4, "kind": "emergency_call", "payload": {"call_id": "c006"}},
+    {"offset_min": 5, "kind": "social_post", "payload": {"signal_id_ref": "s012"}},
+    {"offset_min": 5, "kind": "emergency_call", "payload": {"call_id": "c007"}},
+    {"offset_min": 6, "kind": "social_post", "payload": {"signal_id_ref": "s013"}},
+    {"offset_min": 7, "kind": "sensor_reading", "payload": {"sensor_id": "temp_f7", "value": 44.1, "type": "heat_index"}},
+    {"offset_min": 8, "kind": "emergency_call", "payload": {"call_id": "c008"}}
+  ],
+  "expected": {
+    "incidents": [
+      {"zone": "F-7-katchi", "type": "heatwave", "severity_min": 2, "severity_max": 4, "confidence_min": 0.3}
+    ],
+    "dispatches_min": 2,
+    "alerts_emitted": 1,
+    "recalls": 0
+  }
+}

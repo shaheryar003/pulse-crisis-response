@@ -1,0 +1,37 @@
+{
+  "id": "A",
+  "name": "G-10 Urban Flooding (concurrent with B)",
+  "description": "Heavy rainfall + social reports + traffic spike in G-10. Multi-source corroboration; high confidence.",
+  "start_ts": "2026-05-15T15:00:00Z",
+  "duration_min": 30,
+  "api_overrides": {"weather": "live", "traffic": "live"},
+  "weather_overrides": {
+    "G-10": {"rain_mmhr": 47, "forecast_60min": 35}
+  },
+  "events": [
+    {"offset_min": 0, "kind": "weather_tick", "payload": {"zone": "G-10", "rain_mmhr": 18, "alert": "elevated"}},
+    {"offset_min": 2, "kind": "social_post", "payload": {"signal_id_ref": "s001"}},
+    {"offset_min": 3, "kind": "social_post", "payload": {"signal_id_ref": "s002"}},
+    {"offset_min": 3, "kind": "sensor_reading", "payload": {"sensor_id": "ws_g10_a", "value": 34, "type": "water_level"}},
+    {"offset_min": 4, "kind": "social_post", "payload": {"signal_id_ref": "s003"}},
+    {"offset_min": 4, "kind": "emergency_call", "payload": {"call_id": "c001"}},
+    {"offset_min": 5, "kind": "social_post", "payload": {"signal_id_ref": "s004"}},
+    {"offset_min": 5, "kind": "sensor_reading", "payload": {"sensor_id": "ws_g10_a", "value": 67, "type": "water_level"}},
+    {"offset_min": 5, "kind": "traffic_tick", "payload": {"corridor_id": "c_margalla", "current_eta_s": 1620, "delta": 2.375}},
+    {"offset_min": 5, "kind": "weather_tick", "payload": {"zone": "G-10", "rain_mmhr": 47, "alert": "severe"}},
+    {"offset_min": 6, "kind": "social_post", "payload": {"signal_id_ref": "s005"}},
+    {"offset_min": 6, "kind": "social_post", "payload": {"signal_id_ref": "s006"}},
+    {"offset_min": 7, "kind": "social_post", "payload": {"signal_id_ref": "s007"}},
+    {"offset_min": 7, "kind": "sensor_reading", "payload": {"sensor_id": "ws_g10_a", "value": 92, "type": "water_level"}},
+    {"offset_min": 8, "kind": "social_post", "payload": {"signal_id_ref": "s008"}},
+    {"offset_min": 9, "kind": "sensor_reading", "payload": {"sensor_id": "ws_g10_a", "value": 104, "type": "water_level"}}
+  ],
+  "expected": {
+    "incidents": [
+      {"zone": "G-10", "type": "flood", "severity_min": 4, "severity_max": 5, "confidence_min": 0.55}
+    ],
+    "dispatches_min": 3,
+    "alerts_emitted": 1,
+    "recalls": 0
+  }
+}

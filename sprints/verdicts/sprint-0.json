@@ -1,0 +1,20 @@
+{
+  "agent": "verifier",
+  "skill_version": "1.0.0",
+  "sprint": 0,
+  "ts": "2026-05-15T15:20:00Z",
+  "verdict": "pass",
+  "criteria": [
+    {"id": "file_exists:.agent/skills/pm/SKILL.md", "status": "pass", "evidence": ".agent/skills/pm/SKILL.md non-empty, includes activation triggers, procedure, envelope, rules, failure modes", "must": true},
+    {"id": "file_exists:.agent/skills/verifier/SKILL.md", "status": "pass", "evidence": ".agent/skills/verifier/SKILL.md non-empty, includes verdict matrix format and aggregation rules", "must": true},
+    {"id": "file_exists:sprints/methodology.md", "status": "pass", "evidence": "Defines envelope, lifecycle, criteria conventions", "must": true},
+    {"id": "file_exists:sprints/progress.md", "status": "pass", "evidence": "Tracker initialized with Sprint 0 section", "must": true},
+    {"id": "artifact_present:sprints/sprint-*.md", "status": "pass", "evidence": "9 sprint plans present (sprint-0 through sprint-8)", "must": true},
+    {"id": "file_exists:README.md", "status": "pass", "evidence": "Top-level README with rubric outline and quickstart", "must": true},
+    {"id": "manual_review:pm_skill_completeness", "status": "pass", "evidence": "PM skill includes triggers, 5-step procedure, output envelope, rules, failure modes", "must": true},
+    {"id": "manual_review:verifier_completeness", "status": "pass", "evidence": "Verifier includes criterion enumeration, verdict matrix, aggregation logic", "must": true}
+  ],
+  "remediation": [],
+  "confidence": 0.95,
+  "notes": "Sprint 0 foundation passes all must criteria. Cleared to advance to Sprint 1."
+}

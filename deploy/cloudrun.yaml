@@ -1,0 +1,42 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: pulse-backend
+  annotations:
+    run.googleapis.com/launch-stage: GA
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: "10"
+        autoscaling.knative.dev/minScale: "1"
+        run.googleapis.com/cpu-throttling: "false"
+    spec:
+      containerConcurrency: 50
+      timeoutSeconds: 60
+      containers:
+        - image: gcr.io/PROJECT_ID/pulse-backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PULSE_DEMO_OTP
+              value: "654321"
+            # Provide via Secret Manager in real deploy:
+            # - name: GEMINI_API_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: gemini-api-key
+            #       key: latest
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+          startupProbe:
+            httpGet:
+              path: /health
+            timeoutSeconds: 5
+            failureThreshold: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+            timeoutSeconds: 5

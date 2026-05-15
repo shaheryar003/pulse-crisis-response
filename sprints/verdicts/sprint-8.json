@@ -1,0 +1,18 @@
+{
+  "agent": "verifier",
+  "skill_version": "1.0.0",
+  "sprint": 8,
+  "ts": "2026-05-15T17:42:00Z",
+  "verdict": "pass",
+  "criteria": [
+    {"id": "test_passes:full pytest", "status": "pass", "evidence": "17/17 tests pass in 5.92s", "must": true},
+    {"id": "test_passes:run_demo --all --validate", "status": "pass", "evidence": "All 4 scenarios (A/B/C/D) validate green", "must": true},
+    {"id": "manual_review:perf_p95<8s", "status": "pass", "evidence": "p95 round latency = 70ms (vs 8s target)", "must": true},
+    {"id": "manual_review:rubric_coverage", "status": "pass", "evidence": "sprints/verdicts/rubric.json scores strong on all 6 dimensions", "must": true},
+    {"id": "manual_review:demo_dry_run", "status": "pass", "evidence": "End-to-end demo flow exercises detection (A), multi-crisis (B), retraction (C), degraded (D) in <8s wall-clock", "must": true},
+    {"id": "file_exists:docs/perf-report.md", "status": "pass", "evidence": "Performance report with p50/p95 + test summary", "must": true}
+  ],
+  "remediation": [],
+  "confidence": 0.97,
+  "notes": "All sprints closed; system end-to-end verified; rubric coverage strong across all 6 dimensions."
+}

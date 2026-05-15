@@ -1,0 +1,15 @@
+{"sensor_id":"ws_g10_a","type":"water_level","geo":{"lat":33.695,"lon":73.004},"zone":"G-10","ts":"2026-05-15T15:01:00Z","value":12,"unit":"cm","health":"ok"}
+{"sensor_id":"ws_g10_a","type":"water_level","geo":{"lat":33.695,"lon":73.004},"zone":"G-10","ts":"2026-05-15T15:03:00Z","value":34,"unit":"cm","health":"ok"}
+{"sensor_id":"ws_g10_a","type":"water_level","geo":{"lat":33.695,"lon":73.004},"zone":"G-10","ts":"2026-05-15T15:05:00Z","value":67,"unit":"cm","health":"ok"}
+{"sensor_id":"ws_g10_a","type":"water_level","geo":{"lat":33.695,"lon":73.004},"zone":"G-10","ts":"2026-05-15T15:07:00Z","value":92,"unit":"cm","health":"ok"}
+{"sensor_id":"ws_g10_a","type":"water_level","geo":{"lat":33.695,"lon":73.004},"zone":"G-10","ts":"2026-05-15T15:09:00Z","value":104,"unit":"cm","health":"ok"}
+{"sensor_id":"ws_g10_b","type":"water_level","geo":{"lat":33.697,"lon":73.006},"zone":"G-10","ts":"2026-05-15T15:05:00Z","value":58,"unit":"cm","health":"ok"}
+{"sensor_id":"ws_g10_b","type":"water_level","geo":{"lat":33.697,"lon":73.006},"zone":"G-10","ts":"2026-05-15T15:08:00Z","value":81,"unit":"cm","health":"ok"}
+{"sensor_id":"aqi_f7","type":"aqi","geo":{"lat":33.720,"lon":73.062},"zone":"F-7-katchi","ts":"2026-05-15T15:00:00Z","value":188,"unit":"pm2.5","health":"ok"}
+{"sensor_id":"aqi_f7","type":"aqi","geo":{"lat":33.720,"lon":73.062},"zone":"F-7-katchi","ts":"2026-05-15T15:05:00Z","value":192,"unit":"pm2.5","health":"ok"}
+{"sensor_id":"temp_f7","type":"heat_index","geo":{"lat":33.720,"lon":73.062},"zone":"F-7-katchi","ts":"2026-05-15T15:00:00Z","value":42.8,"unit":"c","health":"ok"}
+{"sensor_id":"temp_f7","type":"heat_index","geo":{"lat":33.720,"lon":73.062},"zone":"F-7-katchi","ts":"2026-05-15T15:05:00Z","value":43.4,"unit":"c","health":"ok"}
+{"sensor_id":"temp_f7","type":"heat_index","geo":{"lat":33.720,"lon":73.062},"zone":"F-7-katchi","ts":"2026-05-15T15:10:00Z","value":44.1,"unit":"c","health":"ok"}
+{"sensor_id":"trans_i9_1","type":"transformer_load","geo":{"lat":33.680,"lon":73.024},"zone":"I-9","ts":"2026-05-15T15:00:00Z","value":0.78,"unit":"load_ratio","health":"ok"}
+{"sensor_id":"trans_i9_1","type":"transformer_load","geo":{"lat":33.680,"lon":73.024},"zone":"I-9","ts":"2026-05-15T15:05:00Z","value":0.82,"unit":"load_ratio","health":"ok"}
+{"sensor_id":"smoke_g8","type":"smoke","geo":{"lat":33.708,"lon":73.054},"zone":"G-8","ts":"2026-05-15T15:00:00Z","value":12,"unit":"ppm","health":"ok"}

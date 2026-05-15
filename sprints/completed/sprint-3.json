@@ -1,0 +1,13 @@
+{
+  "agent": "pm",
+  "sprint": 3,
+  "closed_at": "2026-05-15T16:05:30Z",
+  "verdict": "pass",
+  "summary": "Full Python agent fleet shipped. 14 specialists + Commander + base + services. Hungarian allocator, ensemble classifier, Monte Carlo forecaster, contradiction-aware verifier, recovery loop with audit log. 10/10 tests green; end-to-end CLI run produces 2 incidents/10 dispatches/12 messages for scenario A.",
+  "lessons": [
+    "Mocking the LLM by default (with real Gemini behind GEMINI_API_KEY) lets every test run offline and is faster than hitting the API.",
+    "Expert correction needs to BOTH boost target hypothesis AND dampen competitors — additive-only wasn't enough to overcome accumulated flood evidence.",
+    "Pure-Python ray-casting PIP avoided a shapely install and keeps the dep surface lean."
+  ],
+  "unblocks": "sprint 4"
+}

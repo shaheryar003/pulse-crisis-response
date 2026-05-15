@@ -1,0 +1,24 @@
+{
+  "id": "D",
+  "name": "Degraded mode — weather API down",
+  "description": "Weather API is unavailable. Signal fusion proceeds with cached weather + flagged stale_minutes. System continues to classify and dispatch, but downgrades confidence for weather-dependent claims and surfaces the degraded state on the dashboard.",
+  "start_ts": "2026-05-15T15:00:00Z",
+  "duration_min": 30,
+  "api_overrides": {"weather": "down", "traffic": "live"},
+  "weather_overrides": {},
+  "events": [
+    {"offset_min": 1, "kind": "social_post", "payload": {"signal_id_ref": "s001"}},
+    {"offset_min": 2, "kind": "social_post", "payload": {"signal_id_ref": "s002"}},
+    {"offset_min": 3, "kind": "sensor_reading", "payload": {"sensor_id": "ws_g10_a", "value": 67, "type": "water_level"}},
+    {"offset_min": 4, "kind": "social_post", "payload": {"signal_id_ref": "s003"}},
+    {"offset_min": 5, "kind": "sensor_reading", "payload": {"sensor_id": "ws_g10_a", "value": 92, "type": "water_level"}}
+  ],
+  "expected": {
+    "incidents": [
+      {"zone": "G-10", "type": "flood", "confidence_max": 0.85, "degraded": true}
+    ],
+    "dispatches_min": 1,
+    "alerts_emitted": 1,
+    "recalls": 0
+  }
+}

@@ -1,0 +1,58 @@
+# -- Python --
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# -- Runtime data --
+artifacts/
+pulse.db
+*.db
+*.db-shm
+*.db-wal
+
+# -- Flutter / Dart --
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.metadata
+mobile/.idea/
+mobile/ios/
+mobile/android/.gradle/
+mobile/macos/
+mobile/linux/
+mobile/windows/
+**/Pods/
+*.iml
+
+# -- Editor / OS --
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# -- Secrets --
+.env
+.env.local
+*.pem
+*.key
+secrets.json
+
+# -- Logs --
+*.log
+logs/

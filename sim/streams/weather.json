@@ -1,0 +1,24 @@
+{
+  "metadata": {"source": "openweathermap_mirror", "city": "Islamabad", "fetched_at": "2026-05-15T15:00:00Z"},
+  "now": {
+    "temp_c": 29.0,
+    "feels_like_c": 31.0,
+    "heat_index_c": 30.5,
+    "humidity_pct": 58,
+    "wind_kmh": 14,
+    "rain_mmhr": 0.0,
+    "aqi": 95,
+    "conditions": "partly_cloudy"
+  },
+  "forecast_3h": [
+    {"offset_min": 60,  "rain_mmhr": 2,  "temp_c": 30, "wind_kmh": 16},
+    {"offset_min": 120, "rain_mmhr": 18, "temp_c": 28, "wind_kmh": 22},
+    {"offset_min": 180, "rain_mmhr": 47, "temp_c": 26, "wind_kmh": 28, "alert": "severe_thunderstorm"}
+  ],
+  "grid": [
+    {"zone": "G-10", "rain_mmhr": 0.0, "temp_c": 29.2},
+    {"zone": "F-7",  "rain_mmhr": 0.0, "temp_c": 29.8, "heat_index_c": 31.2},
+    {"zone": "F-7-katchi", "rain_mmhr": 0.0, "temp_c": 30.5, "heat_index_c": 32.4},
+    {"zone": "Bara-Kahu", "rain_mmhr": 1.0, "temp_c": 28.0}
+  ]
+}
