@@ -82,11 +82,11 @@ class _CitizenHomeState extends State<CitizenHome> {
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x5, PulseSpace.x4, PulseSpace.x3),
+              padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x6, PulseSpace.x4, PulseSpace.x3),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Live incidents', style: PulseTheme.display(size: 26)),
+                  Text('Live incidents', style: PulseTheme.display(size: 32)),
                   const SizedBox(height: PulseSpace.x1),
                   EmDashLeader('${_incidents.length} active · last update ${_ts(_lastUpdate)}'),
                 ],
@@ -95,13 +95,14 @@ class _CitizenHomeState extends State<CitizenHome> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4),
+              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4, vertical: PulseSpace.x2),
               child: AspectRatio(
                 aspectRatio: 16 / 11,
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: PulseColors.hairline),
-                    borderRadius: BorderRadius.circular(PulseRadii.xl),
+                    border: Border.all(color: PulseColors.hairlineStrong, width: 1.5),
+                    borderRadius: BorderRadius.circular(PulseRadii.xxl),
+                    boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 4))],
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: FlutterMap(
@@ -121,8 +122,8 @@ class _CitizenHomeState extends State<CitizenHome> {
                           final p = _zoneCoords[i.zone] ?? const LatLng(33.7, 73.05);
                           return Marker(
                             point: p,
-                            width: 56,
-                            height: 56,
+                            width: 80,
+                            height: 80,
                             child: MapPin(severity: i.severity, active: i.status == 'active'),
                           );
                         }).toList(),
@@ -135,7 +136,7 @@ class _CitizenHomeState extends State<CitizenHome> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x5, PulseSpace.x4, PulseSpace.x2),
+              padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x6, PulseSpace.x4, PulseSpace.x3),
               child: SectionLabel(text: 'Active incidents', subtitle: 'count ${_incidents.length}'),
             ),
           ),
@@ -145,7 +146,7 @@ class _CitizenHomeState extends State<CitizenHome> {
               sliver: SliverList.separated(
                 itemCount: 3,
                 separatorBuilder: (_, __) => const SizedBox(height: PulseSpace.x3),
-                itemBuilder: (_, __) => const SkeletonLoader(height: 100, borderRadius: PulseRadii.xl),
+                itemBuilder: (_, __) => const SkeletonLoader(height: 120, borderRadius: PulseRadii.xxl),
               ),
             )
           else if (_error != null)
@@ -158,11 +159,14 @@ class _CitizenHomeState extends State<CitizenHome> {
               ),
             )
           else
-            SliverList.builder(
-              itemCount: _incidents.length,
-              itemBuilder: (_, i) => IncidentCard(incident: _incidents[i], dense: true),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4),
+              sliver: SliverList.builder(
+                itemCount: _incidents.length,
+                itemBuilder: (_, i) => IncidentCard(incident: _incidents[i], dense: false, selected: _incidents[i].severity >= 4),
+              ),
             ),
-          const SliverPadding(padding: EdgeInsets.only(bottom: PulseSpace.x8)),
+          const SliverPadding(padding: EdgeInsets.only(bottom: PulseSpace.x12)),
         ],
       ),
     );

@@ -14,11 +14,6 @@ import '../shared/widgets/skeleton_loader.dart';
 import '../shared/widgets/status_pill.dart';
 
 /// Citizen verify-nearby flow (Sprint-5 task 5.8).
-///
-/// Lists active incidents. For each, the citizen can submit a field
-/// verification (confirm they see it) or dispute (flags possible
-/// misclassification). Both submit via POST /signals/citizen with
-/// expert_correction = true.
 class CitizenVerifyPage extends StatefulWidget {
   const CitizenVerifyPage({super.key});
 
@@ -94,12 +89,12 @@ class _CitizenVerifyPageState extends State<CitizenVerifyPage> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(
-                  PulseSpace.x4, PulseSpace.x5, PulseSpace.x4, PulseSpace.x3),
+                  PulseSpace.x4, PulseSpace.x6, PulseSpace.x4, PulseSpace.x3),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(PulseStrings.get('citizen.verify.title'),
-                      style: PulseTheme.display(size: 26)),
+                      style: PulseTheme.display(size: 32)),
                   const SizedBox(height: PulseSpace.x1),
                   EmDashLeader(PulseStrings.get('citizen.verify.subtitle')),
                 ],
@@ -108,11 +103,11 @@ class _CitizenVerifyPageState extends State<CitizenVerifyPage> {
           ),
           if (_loading)
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4),
+              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4, vertical: PulseSpace.x4),
               sliver: SliverList.separated(
                 itemCount: 3,
                 separatorBuilder: (_, __) => const SizedBox(height: PulseSpace.x3),
-                itemBuilder: (_, __) => const SkeletonLoader(height: 140, borderRadius: PulseRadii.xl),
+                itemBuilder: (_, __) => const SkeletonLoader(height: 140, borderRadius: PulseRadii.xxl),
               ),
             )
           else if (_error != null)
@@ -129,7 +124,7 @@ class _CitizenVerifyPageState extends State<CitizenVerifyPage> {
             )
           else
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4),
+              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4, vertical: PulseSpace.x4),
               sliver: SliverList.separated(
                 itemCount: _incidents.length,
                 separatorBuilder: (_, __) => const SizedBox(height: PulseSpace.x3),
@@ -141,7 +136,7 @@ class _CitizenVerifyPageState extends State<CitizenVerifyPage> {
                 ),
               ),
             ),
-          const SliverPadding(padding: EdgeInsets.only(bottom: PulseSpace.x8)),
+          const SliverPadding(padding: EdgeInsets.only(bottom: PulseSpace.x12)),
         ],
       ),
     );
@@ -170,11 +165,12 @@ class _VerifyCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: PulseColors.ink800.withValues(alpha: 0.85),
-        border: Border.all(color: PulseColors.hairline),
-        borderRadius: BorderRadius.circular(PulseRadii.xl),
+        color: PulseColors.ink800,
+        border: Border.all(color: PulseColors.hairlineStrong),
+        borderRadius: BorderRadius.circular(PulseRadii.xxl),
+        boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 4))],
       ),
-      padding: const EdgeInsets.all(PulseSpace.x4),
+      padding: const EdgeInsets.all(PulseSpace.x5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -206,8 +202,8 @@ class _VerifyCard extends StatelessWidget {
           ]),
           if (!done) ...[
             const SizedBox(height: PulseSpace.x4),
-            Container(height: 1, color: PulseColors.hairline),
-            const SizedBox(height: PulseSpace.x3),
+            Container(height: 1, color: PulseColors.hairlineStrong),
+            const SizedBox(height: PulseSpace.x4),
             Row(children: [
               Expanded(
                 child: CtaButton(

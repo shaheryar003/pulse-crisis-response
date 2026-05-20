@@ -67,22 +67,37 @@ class _ResponderQueuePageState extends State<ResponderQueuePage> {
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x5, PulseSpace.x4, PulseSpace.x4),
+              padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x6, PulseSpace.x4, PulseSpace.x4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(PulseStrings.get('responder.queue.title'),
-                      style: PulseTheme.display(size: 26)),
+                      style: PulseTheme.display(size: 32)),
                   const SizedBox(height: PulseSpace.x1),
                   EmDashLeader('asset $_assetId · ${_items.length} active'),
-                  const SizedBox(height: PulseSpace.x5),
+                  const SizedBox(height: PulseSpace.x6),
                   Row(children: [
                     Expanded(
                       child: TextField(
                         controller: _assetCtl,
-                        style: PulseTheme.data(size: 14),
+                        style: PulseTheme.data(size: 15),
                         decoration: InputDecoration(
                           hintText: PulseStrings.get('responder.queue.asset_hint'),
+                          filled: true,
+                          fillColor: PulseColors.ink800.withValues(alpha: 0.5),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4, vertical: 0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(PulseRadii.xl),
+                            borderSide: const BorderSide(color: PulseColors.hairlineStrong),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(PulseRadii.xl),
+                            borderSide: const BorderSide(color: PulseColors.hairlineStrong),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(PulseRadii.xl),
+                            borderSide: const BorderSide(color: PulseColors.signal, width: 1.5),
+                          ),
                         ),
                         onSubmitted: (v) {
                           _assetId = v.trim();
@@ -90,13 +105,18 @@ class _ResponderQueuePageState extends State<ResponderQueuePage> {
                         },
                       ),
                     ),
-                    const SizedBox(width: PulseSpace.x2),
+                    const SizedBox(width: PulseSpace.x3),
                     OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x5, vertical: PulseSpace.x3),
+                        side: const BorderSide(color: PulseColors.hairlineStrong),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(PulseRadii.xl)),
+                      ),
                       onPressed: () {
                         _assetId = _assetCtl.text.trim();
                         _refresh();
                       },
-                      child: Text(PulseStrings.get('common.load')),
+                      child: Text(PulseStrings.get('common.load'), style: PulseTheme.label(color: PulseColors.pearl)),
                     ),
                   ]),
                 ],
@@ -105,11 +125,11 @@ class _ResponderQueuePageState extends State<ResponderQueuePage> {
           ),
           if (_loading)
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4),
+              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4, vertical: PulseSpace.x4),
               sliver: SliverList.separated(
                 itemCount: 3,
                 separatorBuilder: (_, __) => const SizedBox(height: PulseSpace.x3),
-                itemBuilder: (_, __) => const SkeletonLoader(height: 180, borderRadius: PulseRadii.xl),
+                itemBuilder: (_, __) => const SkeletonLoader(height: 200, borderRadius: PulseRadii.xxl),
               ),
             )
           else if (_error != null)
@@ -127,10 +147,10 @@ class _ResponderQueuePageState extends State<ResponderQueuePage> {
             )
           else
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4),
+              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4, vertical: PulseSpace.x4),
               sliver: SliverList.separated(
                 itemCount: _items.length,
-                separatorBuilder: (_, __) => const SizedBox(height: PulseSpace.x3),
+                separatorBuilder: (_, __) => const SizedBox(height: PulseSpace.x4),
                 itemBuilder: (_, i) {
                   final d = _items[i];
                   return _DispatchCard(
@@ -141,7 +161,7 @@ class _ResponderQueuePageState extends State<ResponderQueuePage> {
                 },
               ),
             ),
-          const SliverPadding(padding: EdgeInsets.only(bottom: PulseSpace.x8)),
+          const SliverPadding(padding: EdgeInsets.only(bottom: PulseSpace.x12)),
         ],
       ),
     );
@@ -163,23 +183,19 @@ class _DispatchCard extends StatelessWidget {
     };
     final idShort = dispatch.id.length > 12 ? dispatch.id.substring(0, 12) : dispatch.id;
     final etaMin = ((dispatch.etaS ?? 0) ~/ 60);
-    // Use actual incident severity if available; fall back to 3 (MAJOR) not a hardcoded 4.
     final severity = dispatch.incidentSeverity ?? 3;
+    
     return Container(
-      margin: const EdgeInsets.only(bottom: PulseSpace.x2),
       decoration: BoxDecoration(
-        color: PulseColors.ink800.withValues(alpha: 0.85),
-        border: Border.all(color: dispatch.priority == 'urgent' ? PulseColors.crimson : PulseColors.hairline, width: dispatch.priority == 'urgent' ? 1.5 : 1),
-        borderRadius: BorderRadius.circular(PulseRadii.xl),
-        boxShadow: [
-          if (dispatch.priority == 'urgent')
-            BoxShadow(color: PulseColors.crimson.withValues(alpha: 0.15), blurRadius: 16, offset: const Offset(0, 4))
-          else
-            const BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 2)),
-        ],
+        color: PulseColors.ink800,
+        border: Border.all(color: dispatch.priority == 'urgent' ? PulseColors.crimson : PulseColors.hairlineStrong, width: dispatch.priority == 'urgent' ? 1.5 : 1),
+        borderRadius: BorderRadius.circular(PulseRadii.xxl),
+        boxShadow: dispatch.priority == 'urgent'
+            ? [BoxShadow(color: PulseColors.crimson.withValues(alpha: 0.15), blurRadius: 16, offset: const Offset(0, 4))]
+            : const [BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 4))],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(PulseSpace.x4),
+        padding: const EdgeInsets.all(PulseSpace.x5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -202,10 +218,9 @@ class _DispatchCard extends StatelessWidget {
                 ),
               ),
             ]),
-            const SizedBox(height: PulseSpace.x3),
-            Container(height: 1, color: PulseColors.hairline),
-            const SizedBox(height: PulseSpace.x3),
-            // Show destination if available (Tier-6 destination.zone / destination.label)
+            const SizedBox(height: PulseSpace.x4),
+            Container(height: 1, color: PulseColors.hairlineStrong),
+            const SizedBox(height: PulseSpace.x4),
             if (dispatch.destinationDisplay != '—')
               DotLeader(
                 label: PulseStrings.get('responder.queue.destination'),
@@ -219,18 +234,18 @@ class _DispatchCard extends StatelessWidget {
                 label: 'status',
                 value: dispatch.status,
                 valueColor: priorityColor),
-            const SizedBox(height: PulseSpace.x3),
+            const SizedBox(height: PulseSpace.x4),
             Text(PulseStrings.get('responder.queue.instructions'),
                 style: PulseTheme.label()),
             const SizedBox(height: PulseSpace.x2),
             Text(dispatch.instructions,
-                style: PulseTheme.data(size: 13, color: PulseColors.pearl)),
+                style: PulseTheme.data(size: 14, color: PulseColors.pearl)),
+            const SizedBox(height: PulseSpace.x5),
+            Container(height: 1, color: PulseColors.hairlineStrong),
             const SizedBox(height: PulseSpace.x4),
-            Container(height: 1, color: PulseColors.hairline),
-            const SizedBox(height: PulseSpace.x3),
             Wrap(
-              spacing: PulseSpace.x2,
-              runSpacing: PulseSpace.x2,
+              spacing: PulseSpace.x3,
+              runSpacing: PulseSpace.x3,
               children: [
                 _ActionButton(
                   label: 'ACK',
@@ -289,47 +304,49 @@ class _ActionButton extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         borderRadius: BorderRadius.circular(PulseRadii.xl),
-        // 48dp minimum tap target
+        // Gloved-use friendly: larger tap targets
         child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
-          child: Container(
+          constraints: const BoxConstraints(minHeight: 56, minWidth: 64),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(
-                horizontal: PulseSpace.x4, vertical: PulseSpace.x4),
+                horizontal: PulseSpace.x4, vertical: PulseSpace.x3),
             decoration: BoxDecoration(
               color: active
-                  ? color.withValues(alpha: 0.10)
+                  ? color.withValues(alpha: 0.15)
                   : primary
-                      ? color.withValues(alpha: 0.06)
+                      ? color.withValues(alpha: 0.10)
                       : Colors.transparent,
               border: Border.all(
                 color: disabled
-                    ? PulseColors.hairline
+                    ? PulseColors.hairlineStrong
                     : active
                         ? color
                         : primary
                             ? color
                             : PulseColors.hairlineStrong,
-                width: 1,
+                width: 1.5,
               ),
               borderRadius: BorderRadius.circular(PulseRadii.xl),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (primary && !active)
                   Text('▸',
                       style: PulseTheme.data(
-                          size: 12, color: color, weight: FontWeight.w700)),
+                          size: 14, color: color, weight: FontWeight.w800)),
                 if (primary && !active) const SizedBox(width: PulseSpace.x2),
                 if (active)
                   Text('✓',
                       style: PulseTheme.data(
-                          size: 11, color: color, weight: FontWeight.w700)),
+                          size: 13, color: color, weight: FontWeight.w800)),
                 if (active) const SizedBox(width: PulseSpace.x2),
                 Text(
                   label,
                   style: PulseTheme.label(color: disabled ? PulseColors.dim : color)
-                      .copyWith(fontSize: 10),
+                      .copyWith(fontSize: 11),
                 ),
               ],
             ),

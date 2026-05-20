@@ -116,19 +116,19 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x5, PulseSpace.x4, PulseSpace.x8),
+      padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x6, PulseSpace.x4, PulseSpace.x8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(PulseStrings.get('citizen.report.title'), style: PulseTheme.display(size: 26)),
+          Text(PulseStrings.get('citizen.report.title'), style: PulseTheme.display(size: 32)),
           const SizedBox(height: PulseSpace.x1),
           EmDashLeader(PulseStrings.get('citizen.report.subtitle')),
-          const SizedBox(height: PulseSpace.x6),
+          const SizedBox(height: PulseSpace.x8),
           const SectionLabel(text: 'Category'),
-          const SizedBox(height: PulseSpace.x2),
+          const SizedBox(height: PulseSpace.x3),
           Wrap(
-            spacing: PulseSpace.x2,
-            runSpacing: PulseSpace.x2,
+            spacing: PulseSpace.x3,
+            runSpacing: PulseSpace.x3,
             children: [
               for (final cat in const [
                 ('flood', 'FLOOD', Icons.water_drop),
@@ -147,19 +147,36 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
                 ),
             ],
           ),
-          const SizedBox(height: PulseSpace.x5),
+          const SizedBox(height: PulseSpace.x6),
           const SectionLabel(text: 'Description'),
-          const SizedBox(height: PulseSpace.x2),
+          const SizedBox(height: PulseSpace.x3),
           TextField(
             controller: _description,
             minLines: 3,
             maxLines: 6,
-            style: PulseTheme.data(size: 14, color: PulseColors.pearl),
-            decoration: const InputDecoration(hintText: 'What is happening?'),
+            style: PulseTheme.data(size: 15, color: PulseColors.pearl),
+            decoration: InputDecoration(
+              hintText: 'What is happening?',
+              hintStyle: PulseTheme.dataSm(color: PulseColors.mist),
+              filled: true,
+              fillColor: PulseColors.ink800.withValues(alpha: 0.5),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(PulseRadii.xl),
+                borderSide: const BorderSide(color: PulseColors.hairlineStrong),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(PulseRadii.xl),
+                borderSide: const BorderSide(color: PulseColors.hairlineStrong),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(PulseRadii.xl),
+                borderSide: const BorderSide(color: PulseColors.signal, width: 1.5),
+              ),
+            ),
           ),
-          const SizedBox(height: PulseSpace.x5),
+          const SizedBox(height: PulseSpace.x6),
           const SectionLabel(text: 'Evidence'),
-          const SizedBox(height: PulseSpace.x2),
+          const SizedBox(height: PulseSpace.x3),
           Row(children: [
             Expanded(
               child: _EvidenceCard(
@@ -181,7 +198,7 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
               ),
             ),
           ]),
-          const SizedBox(height: PulseSpace.x6),
+          const SizedBox(height: PulseSpace.x8),
           CtaButton(
             label: PulseStrings.get('citizen.report.submit'),
             loading: _busy,
@@ -190,10 +207,10 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
           if (_result != null) ...[
             const SizedBox(height: PulseSpace.x4),
             Container(
-              padding: const EdgeInsets.all(PulseSpace.x3),
+              padding: const EdgeInsets.all(PulseSpace.x4),
               decoration: BoxDecoration(
                 color: PulseColors.lime.withValues(alpha: 0.06),
-                border: Border.all(color: PulseColors.lime, width: 1),
+                border: Border.all(color: PulseColors.lime, width: 1.5),
                 borderRadius: BorderRadius.circular(PulseRadii.xl),
               ),
               child: Row(children: [
@@ -209,19 +226,25 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
           if (_error != null) ...[
             const SizedBox(height: PulseSpace.x4),
             Container(
-              padding: const EdgeInsets.all(PulseSpace.x3),
+              padding: const EdgeInsets.all(PulseSpace.x4),
               decoration: BoxDecoration(
                 color: PulseColors.crimson.withValues(alpha: 0.06),
-                border: Border.all(color: PulseColors.crimson, width: 1),
+                border: Border.all(color: PulseColors.crimson, width: 1.5),
                 borderRadius: BorderRadius.circular(PulseRadii.xl),
               ),
               child: Text(_error!, style: PulseTheme.dataSm(color: PulseColors.crimson)),
             ),
           ],
-          const SizedBox(height: PulseSpace.x6),
-          EmDashLeader(PulseStrings.get('citizen.report.privacy_hash')),
-          const SizedBox(height: PulseSpace.x1),
-          EmDashLeader(PulseStrings.get('citizen.report.privacy_trust')),
+          const SizedBox(height: PulseSpace.x8),
+          Center(
+            child: Column(
+              children: [
+                EmDashLeader(PulseStrings.get('citizen.report.privacy_hash')),
+                const SizedBox(height: PulseSpace.x1),
+                EmDashLeader(PulseStrings.get('citizen.report.privacy_trust')),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -244,17 +267,18 @@ class _CategoryChip extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(PulseRadii.xl),
         child: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 96, minHeight: 80),
-          child: Container(
+          constraints: const BoxConstraints(minWidth: 104, minHeight: 88),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x2, vertical: PulseSpace.x3),
             decoration: BoxDecoration(
               color: selected ? PulseColors.signal.withValues(alpha: 0.15) : PulseColors.ink800.withValues(alpha: 0.5),
               border: Border.all(
-                  color: selected ? PulseColors.signal : PulseColors.hairline, width: selected ? 1.5 : 1),
+                  color: selected ? PulseColors.signal : PulseColors.hairlineStrong, width: selected ? 1.5 : 1),
               borderRadius: BorderRadius.circular(PulseRadii.xl),
               boxShadow: [
                 if (selected)
-                  BoxShadow(color: PulseColors.signal.withValues(alpha: 0.2), blurRadius: 8, offset: const Offset(0, 2))
+                  BoxShadow(color: PulseColors.signal.withValues(alpha: 0.25), blurRadius: 12, offset: const Offset(0, 2))
               ],
             ),
             child: Column(
@@ -294,16 +318,17 @@ class _EvidenceCard extends StatelessWidget {
       label: label,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(PulseRadii.xl),
-        child: Container(
+        borderRadius: BorderRadius.circular(PulseRadii.xxl),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.all(PulseSpace.x4),
           decoration: BoxDecoration(
             color: PulseColors.ink800.withValues(alpha: 0.5),
-            border: Border.all(color: hasValue ? color : PulseColors.hairline, width: hasValue ? 1.5 : 1),
-            borderRadius: BorderRadius.circular(PulseRadii.xl),
+            border: Border.all(color: hasValue ? color : PulseColors.hairlineStrong, width: hasValue ? 1.5 : 1),
+            borderRadius: BorderRadius.circular(PulseRadii.xxl),
             boxShadow: [
               if (hasValue)
-                BoxShadow(color: color.withValues(alpha: 0.15), blurRadius: 12, offset: const Offset(0, 2))
+                BoxShadow(color: color.withValues(alpha: 0.25), blurRadius: 16, offset: const Offset(0, 4))
               else
                 const BoxShadow(color: Colors.black26, blurRadius: 6, offset: Offset(0, 2)),
             ],
@@ -313,18 +338,18 @@ class _EvidenceCard extends StatelessWidget {
             children: [
               Row(children: [
                 Text(marker,
-                    style: PulseTheme.data(size: 16, color: color, weight: FontWeight.w700)),
+                    style: PulseTheme.data(size: 18, color: color, weight: FontWeight.w700)),
                 const SizedBox(width: PulseSpace.x2),
                 Text(label, style: PulseTheme.label(color: color).copyWith(fontSize: 11)),
               ]),
               const SizedBox(height: PulseSpace.x3),
-              Container(height: 1, color: PulseColors.hairline),
+              Container(height: 1, color: PulseColors.hairlineStrong),
               const SizedBox(height: PulseSpace.x3),
               if (hasValue)
                 Row(children: [
                   Text('✓',
                       style:
-                          PulseTheme.data(size: 12, color: color, weight: FontWeight.w700)),
+                          PulseTheme.data(size: 14, color: color, weight: FontWeight.w700)),
                   const SizedBox(width: PulseSpace.x2),
                   Expanded(
                       child:

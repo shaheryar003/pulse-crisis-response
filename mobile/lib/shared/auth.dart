@@ -7,7 +7,7 @@ import 'role_router.dart';
 import 'theme.dart';
 import 'tokens.dart';
 import 'widgets/cta_button.dart';
-import 'widgets/section_label.dart';
+import 'widgets/dot_leader.dart';
 import 'widgets/sindh_tile.dart';
 
 class Session {
@@ -128,9 +128,11 @@ class _SignInPageState extends State<SignInPage> {
       backgroundColor: PulseColors.ink900,
       body: Stack(
         children: [
-          const Positioned(
-            left: 0, right: 0, bottom: 0, height: 240,
-            child: SindhTile(opacity: 0.03),
+          // Tactical Humanitarian Redesign: Massive centered watermark
+          const Positioned.fill(
+            child: Center(
+              child: SindhTile(opacity: 0.03, size: 800),
+            ),
           ),
           SafeArea(
             child: Center(
@@ -138,70 +140,86 @@ class _SignInPageState extends State<SignInPage> {
                 constraints: const BoxConstraints(maxWidth: 460),
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x6, vertical: PulseSpace.x8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: [
-                          Text('PULSE', style: PulseTheme.display(size: 48)),
-                          const SizedBox(width: PulseSpace.x3),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Text('v0.1', style: PulseTheme.dataXs()),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: PulseSpace.x2),
-                      const EmDashLeader('Urban Crisis Response · Islamabad operations'),
-                      const SizedBox(height: PulseSpace.x8),
-                      _Field(label: 'API ENDPOINT', controller: _api, hint: 'http://localhost:8000', mono: true),
-                      const SizedBox(height: PulseSpace.x4),
-                      _Field(
-                        label: 'PHONE',
-                        controller: _phone,
-                        hint: '03149946492',
-                        keyboardType: TextInputType.phone,
-                        mono: true,
-                      ),
-                      if (_otpSent) ...[
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: PulseColors.ink800.withValues(alpha: 0.6),
+                      borderRadius: BorderRadius.circular(PulseRadii.xxl),
+                      border: Border.all(color: PulseColors.hairlineStrong, width: 1),
+                      boxShadow: const [
+                        BoxShadow(color: Colors.black26, blurRadius: 16, offset: Offset(0, 4)),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(PulseSpace.x6),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text('PULSE', style: PulseTheme.wordmark(size: 48)),
+                            const SizedBox(width: PulseSpace.x3),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Text('v0.2', style: PulseTheme.dataXs()),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: PulseSpace.x2),
+                        DotLeader(label: 'systems', value: 'Urban Crisis Response · Islamabad'),
+                        const SizedBox(height: PulseSpace.x8),
+                        _Field(label: 'API ENDPOINT', controller: _api, hint: 'http://localhost:8000', mono: true),
                         const SizedBox(height: PulseSpace.x4),
                         _Field(
-                          label: 'ONE-TIME CODE',
-                          controller: _otp,
-                          hint: '654321',
-                          keyboardType: TextInputType.number,
+                          label: 'PHONE',
+                          controller: _phone,
+                          hint: '03149946492',
+                          keyboardType: TextInputType.phone,
                           mono: true,
                         ),
-                        const SizedBox(height: PulseSpace.x4),
-                        Text('ROLE', style: PulseTheme.label()),
-                        const SizedBox(height: PulseSpace.x2),
-                        _RoleSelector(value: _role, onChanged: (v) => setState(() => _role = v)),
-                      ],
-                      const SizedBox(height: PulseSpace.x6),
-                      CtaButton(
-                        label: _otpSent ? 'Verify & continue' : 'Request OTP',
-                        loading: _busy,
-                        onPressed: _busy ? null : (_otpSent ? _verify : _request),
-                      ),
-                      if (_error != null) ...[
-                        const SizedBox(height: PulseSpace.x3),
-                        Container(
-                          padding: const EdgeInsets.all(PulseSpace.x3),
-                          decoration: BoxDecoration(
-                            color: PulseColors.crimson.withValues(alpha: 0.06),
-                            border: Border.all(color: PulseColors.crimson, width: 1),
-                            borderRadius: BorderRadius.circular(PulseRadii.sm),
+                        if (_otpSent) ...[
+                          const SizedBox(height: PulseSpace.x4),
+                          _Field(
+                            label: 'ONE-TIME CODE',
+                            controller: _otp,
+                            hint: '654321',
+                            keyboardType: TextInputType.number,
+                            mono: true,
                           ),
-                          child: Text(_error!, style: PulseTheme.dataSm(color: PulseColors.crimson)),
+                          const SizedBox(height: PulseSpace.x4),
+                          Text('ROLE', style: PulseTheme.label()),
+                          const SizedBox(height: PulseSpace.x2),
+                          _RoleSelector(value: _role, onChanged: (v) => setState(() => _role = v)),
+                        ],
+                        const SizedBox(height: PulseSpace.x6),
+                        CtaButton(
+                          label: _otpSent ? 'Verify & continue' : 'Request OTP',
+                          loading: _busy,
+                          onPressed: _busy ? null : (_otpSent ? _verify : _request),
+                        ),
+                        if (_error != null) ...[
+                          const SizedBox(height: PulseSpace.x3),
+                          Container(
+                            padding: const EdgeInsets.all(PulseSpace.x3),
+                            decoration: BoxDecoration(
+                              color: PulseColors.crimson.withValues(alpha: 0.06),
+                              border: Border.all(color: PulseColors.crimson, width: 1),
+                              borderRadius: BorderRadius.circular(PulseRadii.sm),
+                            ),
+                            child: Text(_error!, style: PulseTheme.dataSm(color: PulseColors.crimson)),
+                          ),
+                        ],
+                        const SizedBox(height: PulseSpace.x8),
+                        Center(
+                          child: Text(
+                            'Demo OTP is 654321 · Phone hashed\nAntigravity redesign build',
+                            textAlign: TextAlign.center,
+                            style: PulseTheme.dataXs(color: PulseColors.mist),
+                          ),
                         ),
                       ],
-                      const SizedBox(height: PulseSpace.x12),
-                      const EmDashLeader('Demo OTP is 654321 · phone is hashed before processing'),
-                      const SizedBox(height: PulseSpace.x2),
-                      const EmDashLeader('Antigravity build a215.7 · 2026-05-15'),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -260,7 +278,8 @@ class _RoleSelector extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: PulseColors.hairline),
-        borderRadius: BorderRadius.circular(PulseRadii.md),
+        borderRadius: BorderRadius.circular(PulseRadii.xl),
+        color: PulseColors.ink900.withValues(alpha: 0.5),
       ),
       child: Row(
         children: roles.map((r) {
@@ -268,33 +287,24 @@ class _RoleSelector extends StatelessWidget {
           return Expanded(
             child: InkWell(
               onTap: () => onChanged(r.$1),
-              child: Container(
+              borderRadius: BorderRadius.circular(PulseRadii.xl),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
                 padding: const EdgeInsets.symmetric(vertical: PulseSpace.x3),
                 decoration: BoxDecoration(
-                  color: active ? PulseColors.signal.withValues(alpha: 0.10) : Colors.transparent,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: active ? PulseColors.signal : Colors.transparent,
-                      width: 1,
-                    ),
+                  color: active ? PulseColors.signal.withValues(alpha: 0.15) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(PulseRadii.xl),
+                  border: Border.all(
+                    color: active ? PulseColors.signal : Colors.transparent,
+                    width: 1,
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (active) ...[
-                      Container(
-                        width: 5, height: 5,
-                        decoration: const BoxDecoration(color: PulseColors.signal, shape: BoxShape.circle),
-                      ),
-                      const SizedBox(width: PulseSpace.x2),
-                    ],
-                    Text(
-                      r.$2,
-                      style: PulseTheme.label(color: active ? PulseColors.signal : PulseColors.mist)
-                          .copyWith(fontSize: 11),
-                    ),
-                  ],
+                child: Center(
+                  child: Text(
+                    r.$2,
+                    style: PulseTheme.label(color: active ? PulseColors.signal : PulseColors.mist)
+                        .copyWith(fontSize: 11),
+                  ),
                 ),
               ),
             ),

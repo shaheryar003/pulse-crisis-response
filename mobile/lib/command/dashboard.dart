@@ -155,7 +155,7 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
     final payload =
         (event['payload'] as Map?)?.cast<String, dynamic>() ?? const {};
     final envelope =
-        (payload['envelope'] as Map?)?.cast<String, dynamic>() ?? const {};
+        (event['envelope'] as Map?)?.cast<String, dynamic>() ?? const {};
     final tier = (payload['tier'] ?? envelope['tier']) as int? ?? 0;
     final agent = (payload['agent'] ?? envelope['agent']) as String? ?? 'unknown';
     final decision = (payload['decision'] ?? envelope['decision']) as String? ?? '';
@@ -303,7 +303,7 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
     return Row(
       children: [
         Expanded(flex: 6, child: _leftPane()),
-        Container(width: 1, color: PulseColors.hairline),
+        Container(width: 1, color: PulseColors.hairlineStrong),
         Expanded(flex: 4, child: _tracePane()),
       ],
     );
@@ -317,7 +317,7 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
           Container(
             decoration: const BoxDecoration(
               border:
-                  Border(bottom: BorderSide(color: PulseColors.hairline)),
+                  Border(bottom: BorderSide(color: PulseColors.hairlineStrong)),
             ),
             child: TabBar(
               tabs: const [Tab(text: 'OPS'), Tab(text: 'TRACE')],
@@ -340,37 +340,22 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
 
   Widget _leftPane() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x4, PulseSpace.x4, PulseSpace.x6),
+      padding: const EdgeInsets.fromLTRB(PulseSpace.x6, PulseSpace.x6, PulseSpace.x6, PulseSpace.x8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(children: [
             Text(PulseStrings.get('command.dashboard.title'),
-                style: PulseTheme.display(size: 22)),
+                style: PulseTheme.display(size: 26)),
             const Spacer(),
-            Container(
-              width: 6, height: 6,
-              decoration: BoxDecoration(
-                color: PulseColors.lime,
-                borderRadius: BorderRadius.circular(3),
-                boxShadow: [
-                  BoxShadow(
-                    color: PulseColors.lime.withValues(alpha: 0.4),
-                    blurRadius: 4,
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(width: PulseSpace.x2),
-            Text(PulseStrings.get('common.live'),
-                style: PulseTheme.label(color: PulseColors.lime)),
+            _LiveBadge(connected: _wsConnected),
           ]),
           const SizedBox(height: PulseSpace.x1),
           EmDashLeader(
               '${_incidents.length} active · ${_msTimestamp(_lastUpdate).split('.').first}'),
           // Error banner with retry
           if (_loadError != null) ...[
-            const SizedBox(height: PulseSpace.x3),
+            const SizedBox(height: PulseSpace.x4),
             ErrorBox(
               error: _loadError!,
               onRetry: () {
@@ -379,13 +364,14 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
               },
             ),
           ],
-          const SizedBox(height: PulseSpace.x4),
+          const SizedBox(height: PulseSpace.x6),
           AspectRatio(
             aspectRatio: 16 / 9,
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: PulseColors.hairline),
-                borderRadius: BorderRadius.circular(PulseRadii.xl),
+                border: Border.all(color: PulseColors.hairlineStrong, width: 1.5),
+                borderRadius: BorderRadius.circular(PulseRadii.xxl),
+                boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 16, offset: Offset(0, 4))],
               ),
               clipBehavior: Clip.antiAlias,
               child: FlutterMap(
@@ -419,9 +405,9 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
               ),
             ),
           ),
-          const SizedBox(height: PulseSpace.x5),
+          const SizedBox(height: PulseSpace.x6),
           SectionLabel(text: 'Active incidents', subtitle: 'count ${_incidents.length}'),
-          const SizedBox(height: PulseSpace.x2),
+          const SizedBox(height: PulseSpace.x3),
           if (_incidents.isEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: PulseSpace.x6),
@@ -439,7 +425,7 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
               ),
           // Incident detail + audit chain (shown when an incident is selected)
           if (_selectedIncidentId != null) ...[
-            const SizedBox(height: PulseSpace.x5),
+            const SizedBox(height: PulseSpace.x6),
             SectionLabel(
               text: 'Incident detail',
               subtitle: _selectedIncidentId!.length > 10
@@ -450,12 +436,12 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
             if (_detailLoading)
               const Padding(
                 padding: EdgeInsets.all(PulseSpace.x4),
-                child: SkeletonLoader(height: 200, borderRadius: PulseRadii.xl),
+                child: SkeletonLoader(height: 200, borderRadius: PulseRadii.xxl),
               )
             else if (_incidentDetail != null)
               _IncidentDetailPane(detail: _incidentDetail!),
           ],
-          const SizedBox(height: PulseSpace.x5),
+          const SizedBox(height: PulseSpace.x6),
           const SectionLabel(text: 'Resources'),
           const SizedBox(height: PulseSpace.x3),
           _ResourceGauges(counts: _assetCounts),
@@ -472,15 +458,16 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
         children: [
           Container(
             padding: const EdgeInsets.fromLTRB(
-                PulseSpace.x4, PulseSpace.x4, PulseSpace.x4, PulseSpace.x3),
+                PulseSpace.x6, PulseSpace.x6, PulseSpace.x6, PulseSpace.x4),
             decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: PulseColors.hairline)),
+              border: Border(bottom: BorderSide(color: PulseColors.hairlineStrong)),
             ),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
+                    color: (_wsConnected ? PulseColors.signal : PulseColors.amber).withValues(alpha: 0.1),
                     border: Border.all(
                       color: _wsConnected
                           ? PulseColors.signal
@@ -496,12 +483,12 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
                     style: PulseTheme.label(
                         color: _wsConnected
                             ? PulseColors.signal
-                            : PulseColors.amber),
+                            : PulseColors.amber).copyWith(fontSize: 10),
                   ),
                 ),
                 const SizedBox(width: PulseSpace.x3),
                 Text(PulseStrings.get('command.trace.title'),
-                    style: PulseTheme.display(size: 18)),
+                    style: PulseTheme.display(size: 20)),
                 const Spacer(),
                 Text('${_events.length} events', style: PulseTheme.dataXs()),
               ],
@@ -520,7 +507,7 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
                     ),
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.all(PulseSpace.x3),
+                    padding: const EdgeInsets.all(PulseSpace.x4),
                     itemCount: _events.length,
                     itemBuilder: (_, i) {
                       final e = _events[i];
@@ -542,6 +529,67 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
     );
   }
 }
+
+class _LiveBadge extends StatefulWidget {
+  final bool connected;
+  const _LiveBadge({required this.connected});
+  @override
+  State<_LiveBadge> createState() => _LiveBadgeState();
+}
+
+class _LiveBadgeState extends State<_LiveBadge> with SingleTickerProviderStateMixin {
+  late final AnimationController _ctl = AnimationController(vsync: this, duration: const Duration(seconds: 2));
+  
+  @override
+  void initState() {
+    super.initState();
+    if (widget.connected) _ctl.repeat(reverse: true);
+  }
+  
+  @override
+  void didUpdateWidget(_LiveBadge oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.connected && !oldWidget.connected) {
+      _ctl.repeat(reverse: true);
+    } else if (!widget.connected && oldWidget.connected) {
+      _ctl.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    _ctl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _ctl,
+      builder: (_, __) {
+        final color = widget.connected ? PulseColors.lime : PulseColors.amber;
+        return Row(
+          children: [
+            Container(
+              width: 6, height: 6,
+              decoration: BoxDecoration(
+                color: color,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(color: color.withValues(alpha: 0.2 + 0.4 * _ctl.value), blurRadius: 4 + 4 * _ctl.value),
+                ],
+              ),
+            ),
+            const SizedBox(width: PulseSpace.x2),
+            Text(widget.connected ? PulseStrings.get('common.live') : 'OFFLINE',
+                style: PulseTheme.label(color: color)),
+          ],
+        );
+      },
+    );
+  }
+}
+
 
 class _TraceEvent {
   final int tier;
@@ -623,18 +671,18 @@ class _ResourceGauges extends StatelessWidget {
     final maxV =
         entries.fold<int>(0, (m, e) => e.value > m ? e.value : m).clamp(1, 100);
     return Container(
-      padding: const EdgeInsets.all(PulseSpace.x3),
+      padding: const EdgeInsets.all(PulseSpace.x4),
       decoration: BoxDecoration(
-        color: PulseColors.ink800.withValues(alpha: 0.5),
-        border: Border.all(color: PulseColors.hairline),
-        borderRadius: BorderRadius.circular(PulseRadii.xl),
+        color: PulseColors.ink800,
+        border: Border.all(color: PulseColors.hairlineStrong),
+        borderRadius: BorderRadius.circular(PulseRadii.xxl),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           for (final e in entries)
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 3),
+              padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(
                 children: [
                   SizedBox(
@@ -647,7 +695,7 @@ class _ResourceGauges extends StatelessWidget {
                     child: Text(
                       e.value.toString().padLeft(2),
                       style:
-                          PulseTheme.data(size: 12, color: PulseColors.pearl),
+                          PulseTheme.data(size: 13, color: PulseColors.pearl),
                     ),
                   ),
                   const SizedBox(width: PulseSpace.x2),
@@ -679,6 +727,7 @@ class _ScenarioMenu extends StatelessWidget {
       child: PopupMenuButton<String>(
         tooltip: 'Run scenario',
         color: PulseColors.ink700,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(PulseRadii.xl)),
         onSelected: onRun,
         itemBuilder: (_) => const [
           PopupMenuItem(value: 'A', child: Text('Scenario A · G-10 flood')),
@@ -687,10 +736,10 @@ class _ScenarioMenu extends StatelessWidget {
           PopupMenuItem(value: 'D', child: Text('Scenario D · degraded mode')),
         ],
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x3, vertical: 7),
+          padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4, vertical: 8),
           decoration: BoxDecoration(
-            color: PulseColors.signal.withValues(alpha: 0.08),
-            border: Border.all(color: PulseColors.signal, width: 1),
+            color: PulseColors.signal.withValues(alpha: 0.1),
+            border: Border.all(color: PulseColors.signal, width: 1.5),
             borderRadius: BorderRadius.circular(PulseRadii.xl),
           ),
           child: Row(
@@ -700,7 +749,7 @@ class _ScenarioMenu extends StatelessWidget {
                   style: PulseTheme.data(
                       size: 13,
                       color: PulseColors.signal,
-                      weight: FontWeight.w700)),
+                      weight: FontWeight.w800)),
               const SizedBox(width: PulseSpace.x2),
               Text('RUN', style: PulseTheme.label(color: PulseColors.signal)),
               const SizedBox(width: PulseSpace.x1),
