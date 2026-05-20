@@ -34,7 +34,7 @@ class PulseTheme {
       scaffoldBackgroundColor: PulseColors.ink900,
       canvasColor: PulseColors.ink900,
       textTheme: textTheme,
-      fontFamily: GoogleFonts.dmSans().fontFamily,
+      fontFamily: GoogleFonts.inter().fontFamily,
       dividerColor: PulseColors.hairline,
       dividerTheme: const DividerThemeData(
         color: PulseColors.hairline,
@@ -43,12 +43,13 @@ class PulseTheme {
       ),
       iconTheme: const IconThemeData(color: PulseColors.stone, size: 18),
       cardTheme: const CardThemeData(
-        elevation: 0,
+        elevation: 8,
+        shadowColor: Color(0x66000000),
         margin: EdgeInsets.zero,
         color: PulseColors.ink800,
         shape: RoundedRectangleBorder(
           side: BorderSide(color: PulseColors.hairline, width: 1),
-          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.md)),
+          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -62,15 +63,15 @@ class PulseTheme {
         floatingLabelBehavior: FloatingLabelBehavior.never,
         hintStyle: textTheme.bodyMedium?.copyWith(color: PulseColors.dim),
         border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.md)),
+          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
           borderSide: BorderSide(color: PulseColors.hairline, width: 1),
         ),
         enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.md)),
+          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
           borderSide: BorderSide(color: PulseColors.hairline, width: 1),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.md)),
+          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
           borderSide: BorderSide(color: PulseColors.signal, width: 1),
         ),
       ),
@@ -79,14 +80,14 @@ class PulseTheme {
           backgroundColor: PulseColors.signal.withValues(alpha: 0.10),
           foregroundColor: PulseColors.signal,
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(PulseRadii.md)),
+            borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
             side: BorderSide(color: PulseColors.signal, width: 1),
           ),
           padding: const EdgeInsets.symmetric(
             horizontal: PulseSpace.x5,
             vertical: PulseSpace.x4,
           ),
-          textStyle: GoogleFonts.dmSans(
+          textStyle: GoogleFonts.inter(
             fontSize: 13,
             fontWeight: FontWeight.w600,
             letterSpacing: 0.6,
@@ -98,13 +99,13 @@ class PulseTheme {
           foregroundColor: PulseColors.pearl,
           side: const BorderSide(color: PulseColors.hairlineStrong, width: 1),
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(PulseRadii.md)),
+            borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
           ),
           padding: const EdgeInsets.symmetric(
             horizontal: PulseSpace.x4,
             vertical: PulseSpace.x3,
           ),
-          textStyle: GoogleFonts.dmSans(
+          textStyle: GoogleFonts.inter(
             fontSize: 12,
             fontWeight: FontWeight.w600,
             letterSpacing: 0.6,
@@ -114,7 +115,7 @@ class PulseTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: PulseColors.stone,
-          textStyle: GoogleFonts.dmSans(
+          textStyle: GoogleFonts.inter(
             fontSize: 12,
             fontWeight: FontWeight.w600,
             letterSpacing: 0.6,
@@ -125,13 +126,13 @@ class PulseTheme {
         backgroundColor: PulseColors.ink800,
         side: const BorderSide(color: PulseColors.hairline, width: 1),
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.sm)),
+          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.lg)),
         ),
-        labelStyle: GoogleFonts.dmSans(
-          color: PulseColors.stone,
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.6,
+        labelStyle: GoogleFonts.inter(
+            color: PulseColors.stone,
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.6,
         ),
         padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x3, vertical: PulseSpace.x2),
       ),
@@ -156,15 +157,14 @@ class PulseTheme {
   }
 
   static TextTheme _textTheme() {
-    final body = GoogleFonts.dmSansTextTheme(const TextTheme()).apply(
+    final body = GoogleFonts.interTextTheme(const TextTheme()).apply(
       bodyColor: PulseColors.pearl,
       displayColor: PulseColors.pearl,
     );
 
-    final display = GoogleFonts.fraunces(
+    final display = GoogleFonts.inter(
       color: PulseColors.pearl,
-      fontStyle: FontStyle.italic,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w700,
       letterSpacing: -0.5,
     );
 
@@ -174,43 +174,43 @@ class PulseTheme {
       displaySmall: display.copyWith(fontSize: 26, height: 1.15),
       headlineLarge: display.copyWith(fontSize: 22, height: 1.2),
       headlineMedium: display.copyWith(fontSize: 18, height: 1.25),
-      titleLarge: GoogleFonts.dmSans(
+      titleLarge: GoogleFonts.inter(
         color: PulseColors.pearl,
         fontSize: 15,
         height: 1.3,
         fontWeight: FontWeight.w600,
       ),
-      titleMedium: GoogleFonts.dmSans(
+      titleMedium: GoogleFonts.inter(
         color: PulseColors.pearl,
         fontSize: 14,
         height: 1.3,
         fontWeight: FontWeight.w600,
       ),
-      titleSmall: GoogleFonts.dmSans(
+      titleSmall: GoogleFonts.inter(
         color: PulseColors.stone,
         fontSize: 12,
         height: 1.3,
         fontWeight: FontWeight.w600,
         letterSpacing: 0.4,
       ),
-      bodyLarge: GoogleFonts.dmSans(color: PulseColors.pearl, fontSize: 14, height: 1.45),
-      bodyMedium: GoogleFonts.dmSans(color: PulseColors.stone, fontSize: 13, height: 1.45),
-      bodySmall: GoogleFonts.dmSans(color: PulseColors.mist, fontSize: 12, height: 1.4),
-      labelLarge: GoogleFonts.dmSans(
+      bodyLarge: GoogleFonts.inter(color: PulseColors.pearl, fontSize: 14, height: 1.45),
+      bodyMedium: GoogleFonts.inter(color: PulseColors.stone, fontSize: 13, height: 1.45),
+      bodySmall: GoogleFonts.inter(color: PulseColors.mist, fontSize: 12, height: 1.4),
+      labelLarge: GoogleFonts.inter(
         color: PulseColors.mist,
         fontSize: 11,
         height: 1.2,
         fontWeight: FontWeight.w600,
         letterSpacing: 1.2,
       ),
-      labelMedium: GoogleFonts.dmSans(
+      labelMedium: GoogleFonts.inter(
         color: PulseColors.mist,
         fontSize: 10,
         height: 1.2,
         fontWeight: FontWeight.w600,
         letterSpacing: 1.4,
       ),
-      labelSmall: GoogleFonts.dmSans(
+      labelSmall: GoogleFonts.inter(
         color: PulseColors.dim,
         fontSize: 9,
         height: 1.2,
@@ -229,16 +229,15 @@ class PulseTheme {
   static TextStyle dataXs({Color color = PulseColors.mist}) =>
       GoogleFonts.jetBrainsMono(color: color, fontSize: 10, fontWeight: FontWeight.w600, letterSpacing: 0.4);
 
-  static TextStyle display({double size = 26, Color color = PulseColors.pearl}) => GoogleFonts.fraunces(
+  static TextStyle display({double size = 26, Color color = PulseColors.pearl}) => GoogleFonts.inter(
         color: color,
         fontSize: size,
-        fontStyle: FontStyle.italic,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w700,
         letterSpacing: -0.5,
         height: 1.1,
       );
 
-  static TextStyle label({Color color = PulseColors.mist}) => GoogleFonts.dmSans(
+  static TextStyle label({Color color = PulseColors.mist}) => GoogleFonts.inter(
         color: color,
         fontSize: 10,
         fontWeight: FontWeight.w600,

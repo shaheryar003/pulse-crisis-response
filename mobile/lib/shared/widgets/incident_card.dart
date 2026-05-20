@@ -46,12 +46,17 @@ class IncidentCard extends StatelessWidget {
     final idShort = incident.id.length > 10 ? incident.id.substring(0, 10) : incident.id;
 
     final inner = Container(
+      margin: const EdgeInsets.only(bottom: PulseSpace.x2),
       decoration: BoxDecoration(
-        color: PulseColors.ink800,
-        border: Border(
-          left: BorderSide(color: selected ? PulseColors.signal : Colors.transparent, width: 2),
-          bottom: const BorderSide(color: PulseColors.hairline, width: 1),
-        ),
+        color: PulseColors.ink800.withValues(alpha: 0.85),
+        borderRadius: BorderRadius.circular(PulseRadii.xl),
+        border: Border.all(color: selected ? PulseColors.signal : PulseColors.hairline, width: selected ? 1.5 : 1),
+        boxShadow: [
+          if (selected)
+            BoxShadow(color: PulseColors.signal.withValues(alpha: 0.15), blurRadius: 16, offset: const Offset(0, 4))
+          else
+            const BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 2)),
+        ],
       ),
       padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x4, PulseSpace.x4, PulseSpace.x4),
       child: Column(

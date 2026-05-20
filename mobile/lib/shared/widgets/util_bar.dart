@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,22 +25,24 @@ class UtilBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 56,
-      decoration: const BoxDecoration(
-        color: PulseColors.ink900,
-        border: Border(bottom: BorderSide(color: PulseColors.hairline, width: 1)),
-      ),
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+        child: Container(
+          height: 56,
+          decoration: BoxDecoration(
+            color: PulseColors.ink900.withValues(alpha: 0.7),
+            border: const Border(bottom: BorderSide(color: PulseColors.hairline, width: 1)),
+          ),
       padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4),
       child: Row(
         children: [
           Text(
             'PULSE',
-            style: GoogleFonts.fraunces(
+            style: GoogleFonts.inter(
               color: PulseColors.pearl,
               fontSize: 22,
-              fontWeight: FontWeight.w600,
-              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w800,
               letterSpacing: -0.5,
             ),
           ),
@@ -65,10 +68,10 @@ class UtilBar extends StatelessWidget implements PreferredSizeWidget {
                     height: 48,
                     child: InkWell(
                       onTap: onTab == null ? null : () => onTab!(i),
-                      borderRadius: BorderRadius.circular(2),
+                      borderRadius: BorderRadius.circular(PulseRadii.sm),
                       child: Center(
                         child: Container(
-                          padding: const EdgeInsets.only(top: 2, bottom: 4),
+                          padding: const EdgeInsets.only(top: PulseSpace.x0_5, bottom: PulseSpace.x1),
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
@@ -81,7 +84,7 @@ class UtilBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                           child: Text(
                             t.label.toUpperCase(),
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.inter(
                               color: active
                                   ? PulseColors.pearl
                                   : PulseColors.mist,
@@ -102,6 +105,8 @@ class UtilBar extends StatelessWidget implements PreferredSizeWidget {
           ...actions,
         ],
       ),
+    ),
+    ),
     );
   }
 }
@@ -125,7 +130,7 @@ class _RoleIndicator extends StatelessWidget {
           height: 6,
           decoration: BoxDecoration(
             color: PulseColors.lime,
-            borderRadius: BorderRadius.circular(3),
+            borderRadius: BorderRadius.circular(PulseRadii.md),
             boxShadow: [
               BoxShadow(color: PulseColors.lime.withValues(alpha: 0.4), blurRadius: 4),
             ],
@@ -161,14 +166,14 @@ class UtilIconButton extends StatelessWidget {
         height: 40,
         child: InkWell(
           onTap: onPressed,
-          borderRadius: BorderRadius.circular(PulseRadii.sm),
+          borderRadius: BorderRadius.circular(PulseRadii.md),
           child: Center(
             child: Container(
               width: 32,
               height: 32,
               decoration: BoxDecoration(
                 border: Border.all(color: PulseColors.hairline),
-                borderRadius: BorderRadius.circular(PulseRadii.sm),
+                borderRadius: BorderRadius.circular(PulseRadii.md),
               ),
               child: Icon(icon, size: 14, color: PulseColors.stone),
             ),

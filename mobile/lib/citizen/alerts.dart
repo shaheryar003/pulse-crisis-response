@@ -8,6 +8,7 @@ import '../shared/tokens.dart';
 import '../shared/widgets/approval_gate_badge.dart';
 import '../shared/widgets/error_box.dart';
 import '../shared/widgets/section_label.dart';
+import '../shared/widgets/skeleton_loader.dart';
 import '../shared/widgets/status_pill.dart';
 
 class CitizenAlertsPage extends StatefulWidget {
@@ -66,13 +67,12 @@ class _CitizenAlertsPageState extends State<CitizenAlertsPage> {
             ),
           ),
           if (_loading)
-            const SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(
-                child: SizedBox(
-                  width: 22, height: 22,
-                  child: CircularProgressIndicator(color: PulseColors.signal, strokeWidth: 1.5),
-                ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4),
+              sliver: SliverList.separated(
+                itemCount: 3,
+                separatorBuilder: (_, __) => const SizedBox(height: PulseSpace.x3),
+                itemBuilder: (_, __) => const SkeletonLoader(height: 120, borderRadius: PulseRadii.xl),
               ),
             )
           else if (_error != null)
@@ -133,18 +133,16 @@ class _AlertCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final accent = _channelAccent();
     final retracted = alert.isRetracted;
-    final idShort = alert.incidentId.length > 10
-        ? alert.incidentId.substring(0, 10)
-        : alert.incidentId;
+    final idShort = 'Alert #${alert.incidentId.hashCode.abs() % 10000}';
 
     return Container(
       decoration: BoxDecoration(
-        color: PulseColors.ink800,
+        color: PulseColors.ink800.withValues(alpha: 0.85),
         border: Border.all(color: PulseColors.hairline),
-        borderRadius: BorderRadius.circular(PulseRadii.sm),
+        borderRadius: BorderRadius.circular(PulseRadii.xl),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(PulseRadii.sm),
+        borderRadius: BorderRadius.circular(PulseRadii.xl),
         child: IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,

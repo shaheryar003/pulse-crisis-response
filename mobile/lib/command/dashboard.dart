@@ -17,6 +17,7 @@ import '../shared/widgets/error_box.dart';
 import '../shared/widgets/incident_card.dart';
 import '../shared/widgets/map_pin.dart';
 import '../shared/widgets/section_label.dart';
+import '../shared/widgets/skeleton_loader.dart';
 import '../shared/widgets/sparkbar.dart';
 import '../shared/widgets/trace_event_card.dart';
 import '../shared/widgets/util_bar.dart';
@@ -384,7 +385,7 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(color: PulseColors.hairline),
-                borderRadius: BorderRadius.circular(PulseRadii.md),
+                borderRadius: BorderRadius.circular(PulseRadii.xl),
               ),
               clipBehavior: Clip.antiAlias,
               child: FlutterMap(
@@ -447,15 +448,9 @@ class _CommandDashboardPageState extends State<CommandDashboardPage> {
             ),
             const SizedBox(height: PulseSpace.x3),
             if (_detailLoading)
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(PulseSpace.x4),
-                  child: SizedBox(
-                    width: 20, height: 20,
-                    child: CircularProgressIndicator(
-                        color: PulseColors.signal, strokeWidth: 1.5),
-                  ),
-                ),
+              const Padding(
+                padding: EdgeInsets.all(PulseSpace.x4),
+                child: SkeletonLoader(height: 200, borderRadius: PulseRadii.xl),
               )
             else if (_incidentDetail != null)
               _IncidentDetailPane(detail: _incidentDetail!),
@@ -630,8 +625,9 @@ class _ResourceGauges extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(PulseSpace.x3),
       decoration: BoxDecoration(
+        color: PulseColors.ink800.withValues(alpha: 0.5),
         border: Border.all(color: PulseColors.hairline),
-        borderRadius: BorderRadius.circular(PulseRadii.md),
+        borderRadius: BorderRadius.circular(PulseRadii.xl),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -695,7 +691,7 @@ class _ScenarioMenu extends StatelessWidget {
           decoration: BoxDecoration(
             color: PulseColors.signal.withValues(alpha: 0.08),
             border: Border.all(color: PulseColors.signal, width: 1),
-            borderRadius: BorderRadius.circular(PulseRadii.sm),
+            borderRadius: BorderRadius.circular(PulseRadii.xl),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,

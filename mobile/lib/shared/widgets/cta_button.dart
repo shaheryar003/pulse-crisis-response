@@ -24,14 +24,28 @@ class CtaButton extends StatelessWidget {
     final c = color ?? PulseColors.signal;
     final btn = FilledButton(
       onPressed: loading ? null : onPressed,
-      style: FilledButton.styleFrom(
-        backgroundColor: c.withValues(alpha: 0.10),
-        foregroundColor: c,
-        side: BorderSide(color: c, width: 1),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.md)),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x5, vertical: PulseSpace.x4),
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.pressed)) return c.withValues(alpha: 0.20);
+          if (states.contains(WidgetState.hovered)) return c.withValues(alpha: 0.15);
+          return c.withValues(alpha: 0.10);
+        }),
+        foregroundColor: WidgetStateProperty.all(c),
+        side: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
+            return BorderSide(color: c, width: 1.5);
+          }
+          return BorderSide(color: c, width: 1);
+        }),
+        shape: WidgetStateProperty.all(const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
+        )),
+        padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: PulseSpace.x5, vertical: PulseSpace.x4)),
+        elevation: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.hovered)) return 8.0;
+          return 0.0;
+        }),
+        shadowColor: WidgetStateProperty.all(c.withValues(alpha: 0.5)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

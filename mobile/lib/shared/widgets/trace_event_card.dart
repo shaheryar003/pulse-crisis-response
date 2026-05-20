@@ -72,15 +72,37 @@ class _TraceEventCardState extends State<TraceEventCard> with SingleTickerProvid
         final borderColor = widget.isNew
             ? Color.lerp(accent, PulseColors.hairline, _ctl.value)!
             : PulseColors.hairline;
-        return Container(
+        
+        final content = Container(
           margin: const EdgeInsets.only(bottom: PulseSpace.x3),
           decoration: BoxDecoration(
-            color: PulseColors.ink800,
+            color: PulseColors.ink800.withValues(alpha: 0.85),
             border: Border.all(color: borderColor, width: 1),
-            borderRadius: BorderRadius.circular(PulseRadii.md),
+            borderRadius: BorderRadius.circular(PulseRadii.xl),
+            boxShadow: const [
+              BoxShadow(color: Colors.black26, blurRadius: 6, offset: Offset(0, 2)),
+            ],
           ),
           child: child,
         );
+
+        if (widget.isNew) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1.0, 0.0),
+              end: Offset.zero,
+            ).animate(CurvedAnimation(
+              parent: _ctl,
+              curve: Curves.easeOutQuart,
+            )),
+            child: FadeTransition(
+              opacity: _ctl,
+              child: content,
+            ),
+          );
+        }
+        
+        return content;
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,10 +113,10 @@ class _TraceEventCardState extends State<TraceEventCard> with SingleTickerProvid
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x2, vertical: PulseSpace.x0_5),
                   decoration: BoxDecoration(
                     border: Border.all(color: _tierAccent(), width: 1),
-                    borderRadius: BorderRadius.circular(PulseRadii.sm),
+                    borderRadius: BorderRadius.circular(PulseRadii.md),
                   ),
                   child: Text(
                     'T${widget.tier}',
@@ -131,8 +153,8 @@ class _TraceEventCardState extends State<TraceEventCard> with SingleTickerProvid
                     padding: const EdgeInsets.all(PulseSpace.x2),
                     decoration: BoxDecoration(
                       border: Border.all(color: PulseColors.hairline),
-                      color: PulseColors.ink900,
-                      borderRadius: BorderRadius.circular(PulseRadii.sm),
+                      color: PulseColors.ink900.withValues(alpha: 0.6),
+                      borderRadius: BorderRadius.circular(PulseRadii.md),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +168,7 @@ class _TraceEventCardState extends State<TraceEventCard> with SingleTickerProvid
                         ],
                         for (final entry in widget.details!.entries)
                           Padding(
-                            padding: const EdgeInsets.only(top: 2),
+                            padding: const EdgeInsets.only(top: PulseSpace.x0_5),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.baseline,
                               textBaseline: TextBaseline.alphabetic,

@@ -30,15 +30,15 @@ class Sparkbar extends StatelessWidget {
         final isFilled = i < filled;
         return Padding(
           padding: EdgeInsets.only(right: i == cells - 1 ? 0 : 1),
-          child: AnimatedContainer(
-            duration: Duration(milliseconds: 200 + (i * 24)),
-            width: cellWidth,
-            height: height,
-            decoration: BoxDecoration(
-              color: isFilled ? filledColor : emptyColor.withValues(alpha: 0.4),
-              borderRadius: BorderRadius.circular(0.5),
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 200 + (i * 24)),
+              width: cellWidth,
+              height: height,
+              decoration: BoxDecoration(
+                color: isFilled ? filledColor : emptyColor.withValues(alpha: 0.4),
+                borderRadius: BorderRadius.circular(PulseRadii.xs),
+              ),
             ),
-          ),
         );
       }),
     );

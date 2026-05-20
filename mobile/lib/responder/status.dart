@@ -84,7 +84,8 @@ class _ResponderStatusPageState extends State<ResponderStatusPage> {
           Container(
             decoration: BoxDecoration(
               border: Border.all(color: PulseColors.hairline),
-              borderRadius: BorderRadius.circular(PulseRadii.md),
+              borderRadius: BorderRadius.circular(PulseRadii.xl),
+              color: PulseColors.ink800.withValues(alpha: 0.5),
             ),
             child: Row(
               children: _statuses.map((s) {
@@ -157,7 +158,7 @@ class _ResponderStatusPageState extends State<ResponderStatusPage> {
               decoration: BoxDecoration(
                 color: PulseColors.lime.withValues(alpha: 0.06),
                 border: Border.all(color: PulseColors.lime, width: 1),
-                borderRadius: BorderRadius.circular(PulseRadii.sm),
+                borderRadius: BorderRadius.circular(PulseRadii.xl),
               ),
               child: Row(children: [
                 const StatusPill(label: 'UPDATED', color: PulseColors.lime, dense: true),
@@ -175,7 +176,7 @@ class _ResponderStatusPageState extends State<ResponderStatusPage> {
               decoration: BoxDecoration(
                 color: PulseColors.crimson.withValues(alpha: 0.06),
                 border: Border.all(color: PulseColors.crimson, width: 1),
-                borderRadius: BorderRadius.circular(PulseRadii.sm),
+                borderRadius: BorderRadius.circular(PulseRadii.xl),
               ),
               child: Text(_error!,
                   style: PulseTheme.dataSm(color: PulseColors.crimson)),

@@ -10,6 +10,7 @@ import '../shared/widgets/cta_button.dart';
 import '../shared/widgets/error_box.dart';
 import '../shared/widgets/section_label.dart';
 import '../shared/widgets/severity_pill.dart';
+import '../shared/widgets/skeleton_loader.dart';
 import '../shared/widgets/status_pill.dart';
 
 /// Citizen verify-nearby flow (Sprint-5 task 5.8).
@@ -106,14 +107,12 @@ class _CitizenVerifyPageState extends State<CitizenVerifyPage> {
             ),
           ),
           if (_loading)
-            const SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(
-                child: SizedBox(
-                  width: 22, height: 22,
-                  child: CircularProgressIndicator(
-                      color: PulseColors.signal, strokeWidth: 1.5),
-                ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4),
+              sliver: SliverList.separated(
+                itemCount: 3,
+                separatorBuilder: (_, __) => const SizedBox(height: PulseSpace.x3),
+                itemBuilder: (_, __) => const SkeletonLoader(height: 140, borderRadius: PulseRadii.xl),
               ),
             )
           else if (_error != null)
@@ -171,9 +170,9 @@ class _VerifyCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: PulseColors.ink800,
+        color: PulseColors.ink800.withValues(alpha: 0.85),
         border: Border.all(color: PulseColors.hairline),
-        borderRadius: BorderRadius.circular(PulseRadii.md),
+        borderRadius: BorderRadius.circular(PulseRadii.xl),
       ),
       padding: const EdgeInsets.all(PulseSpace.x4),
       child: Column(

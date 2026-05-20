@@ -52,25 +52,18 @@ class StatusPill extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(PulseRadii.sm),
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(PulseRadii.xl),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
       ),
-      child: IntrinsicHeight(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(width: 3, color: color),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: dense ? PulseSpace.x2 : PulseSpace.x3,
-                vertical: dense ? 3 : 5,
-              ),
-              child: Text(
-                label,
-                style: PulseTheme.label(color: color).copyWith(fontSize: dense ? 9 : 10),
-              ),
-            ),
-          ],
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: dense ? PulseSpace.x2 : PulseSpace.x3,
+          vertical: dense ? 2 : 4,
+        ),
+        child: Text(
+          label,
+          style: PulseTheme.label(color: color).copyWith(fontSize: dense ? 9 : 10),
         ),
       ),
     );

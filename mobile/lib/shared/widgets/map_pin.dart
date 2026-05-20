@@ -46,26 +46,47 @@ class _MapPinState extends State<MapPin> with SingleTickerProviderStateMixin {
             children: [
               if (widget.severity >= 4 && widget.active)
                 Container(
-                  width: 44,
-                  height: 44,
+                  width: 56,
+                  height: 56,
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: haloOpacity),
                     shape: BoxShape.circle,
                   ),
                 ),
-              Container(
-                width: 28,
-                height: 28,
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.20),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: color, width: 1.5),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  '${widget.severity}',
-                  style: PulseTheme.data(
-                      size: 13, color: PulseColors.pearl, weight: FontWeight.w700),
+              Transform.translate(
+                offset: const Offset(0, -12),
+                child: Transform.rotate(
+                  angle: 3.14159 / 4, // 45 degrees
+                  child: Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.9),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(16),
+                        topRight: Radius.circular(16),
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(4),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: color.withValues(alpha: 0.4),
+                          blurRadius: 8,
+                          offset: const Offset(2, 2),
+                        )
+                      ],
+                      border: Border.all(color: PulseColors.pearl.withValues(alpha: 0.8), width: 1.5),
+                    ),
+                    alignment: Alignment.center,
+                    child: Transform.rotate(
+                      angle: -3.14159 / 4, // Un-rotate text
+                      child: Text(
+                        '${widget.severity}',
+                        style: PulseTheme.data(
+                            size: 14, color: PulseColors.ink900, weight: FontWeight.w800),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],

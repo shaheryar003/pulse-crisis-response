@@ -4,11 +4,13 @@ import 'package:latlong2/latlong.dart';
 
 import '../models/incident.dart';
 import '../services/api.dart';
+import '../shared/strings.dart';
 import '../shared/theme.dart';
 import '../shared/tokens.dart';
 import '../shared/widgets/incident_card.dart';
 import '../shared/widgets/map_pin.dart';
 import '../shared/widgets/section_label.dart';
+import '../shared/widgets/skeleton_loader.dart';
 
 class CitizenHome extends StatefulWidget {
   const CitizenHome({super.key});
@@ -99,7 +101,7 @@ class _CitizenHomeState extends State<CitizenHome> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: PulseColors.hairline),
-                    borderRadius: BorderRadius.circular(PulseRadii.md),
+                    borderRadius: BorderRadius.circular(PulseRadii.xl),
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: FlutterMap(
@@ -138,22 +140,21 @@ class _CitizenHomeState extends State<CitizenHome> {
             ),
           ),
           if (_loading)
-            const SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(
-                child: SizedBox(
-                  width: 22, height: 22,
-                  child: CircularProgressIndicator(color: PulseColors.signal, strokeWidth: 1.5),
-                ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4),
+              sliver: SliverList.separated(
+                itemCount: 3,
+                separatorBuilder: (_, __) => const SizedBox(height: PulseSpace.x3),
+                itemBuilder: (_, __) => const SkeletonLoader(height: 100, borderRadius: PulseRadii.xl),
               ),
             )
           else if (_error != null)
             SliverToBoxAdapter(child: _ErrorBox(error: _error!, onRetry: _refresh))
           else if (_incidents.isEmpty)
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.all(PulseSpace.x8),
-                child: Center(child: EmDashLeader('No active incidents in your area.')),
+                padding: const EdgeInsets.all(PulseSpace.x8),
+                child: Center(child: EmDashLeader(PulseStrings.get('citizen.home.empty', PulseStrings.en))),
               ),
             )
           else
@@ -180,7 +181,7 @@ class _ErrorBox extends StatelessWidget {
           decoration: BoxDecoration(
             color: PulseColors.crimson.withValues(alpha: 0.06),
             border: Border.all(color: PulseColors.crimson, width: 1),
-            borderRadius: BorderRadius.circular(PulseRadii.sm),
+            borderRadius: BorderRadius.circular(PulseRadii.xl),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

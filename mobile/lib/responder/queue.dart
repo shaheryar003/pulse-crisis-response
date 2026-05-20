@@ -9,6 +9,7 @@ import '../shared/widgets/dot_leader.dart';
 import '../shared/widgets/error_box.dart';
 import '../shared/widgets/section_label.dart';
 import '../shared/widgets/severity_pill.dart';
+import '../shared/widgets/skeleton_loader.dart';
 import '../shared/widgets/status_pill.dart';
 
 class ResponderQueuePage extends StatefulWidget {
@@ -103,13 +104,12 @@ class _ResponderQueuePageState extends State<ResponderQueuePage> {
             ),
           ),
           if (_loading)
-            const SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(
-                child: SizedBox(
-                  width: 22, height: 22,
-                  child: CircularProgressIndicator(color: PulseColors.signal, strokeWidth: 1.5),
-                ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4),
+              sliver: SliverList.separated(
+                itemCount: 3,
+                separatorBuilder: (_, __) => const SizedBox(height: PulseSpace.x3),
+                itemBuilder: (_, __) => const SkeletonLoader(height: 180, borderRadius: PulseRadii.xl),
               ),
             )
           else if (_error != null)
@@ -166,10 +166,17 @@ class _DispatchCard extends StatelessWidget {
     // Use actual incident severity if available; fall back to 3 (MAJOR) not a hardcoded 4.
     final severity = dispatch.incidentSeverity ?? 3;
     return Container(
+      margin: const EdgeInsets.only(bottom: PulseSpace.x2),
       decoration: BoxDecoration(
-        color: PulseColors.ink800,
-        border: Border.all(color: PulseColors.hairline),
-        borderRadius: BorderRadius.circular(PulseRadii.md),
+        color: PulseColors.ink800.withValues(alpha: 0.85),
+        border: Border.all(color: dispatch.priority == 'urgent' ? PulseColors.crimson : PulseColors.hairline, width: dispatch.priority == 'urgent' ? 1.5 : 1),
+        borderRadius: BorderRadius.circular(PulseRadii.xl),
+        boxShadow: [
+          if (dispatch.priority == 'urgent')
+            BoxShadow(color: PulseColors.crimson.withValues(alpha: 0.15), blurRadius: 16, offset: const Offset(0, 4))
+          else
+            const BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 2)),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(PulseSpace.x4),
@@ -281,7 +288,7 @@ class _ActionButton extends StatelessWidget {
       enabled: !disabled,
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(PulseRadii.sm),
+        borderRadius: BorderRadius.circular(PulseRadii.xl),
         // 48dp minimum tap target
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
@@ -304,7 +311,7 @@ class _ActionButton extends StatelessWidget {
                             : PulseColors.hairlineStrong,
                 width: 1,
               ),
-              borderRadius: BorderRadius.circular(PulseRadii.sm),
+              borderRadius: BorderRadius.circular(PulseRadii.xl),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

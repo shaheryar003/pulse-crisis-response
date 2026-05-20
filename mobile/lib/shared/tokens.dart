@@ -61,13 +61,17 @@ class PulseColors {
 class PulseRadii {
   PulseRadii._();
   static const sharp = 0.0;
+  static const xs = 1.0;
   static const sm = 2.0;
   static const md = 4.0;
   static const lg = 8.0;
+  static const xl = 12.0;
+  static const xxl = 16.0;
 }
 
 class PulseSpace {
   PulseSpace._();
+  static const x0_5 = 2.0;
   static const x1 = 4.0;
   static const x2 = 8.0;
   static const x3 = 12.0;

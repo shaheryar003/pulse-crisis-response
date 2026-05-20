@@ -34,9 +34,9 @@ class ForecastBands extends StatelessWidget {
         vertical: PulseSpace.x2,
       ),
       decoration: BoxDecoration(
-        color: PulseColors.ink900,
+        color: PulseColors.ink900.withValues(alpha: 0.6),
         border: Border.all(color: PulseColors.hairline),
-        borderRadius: BorderRadius.circular(PulseRadii.sm),
+        borderRadius: BorderRadius.circular(PulseRadii.md),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,7 +100,7 @@ class _BandRow extends StatelessWidget {
         const SizedBox(width: PulseSpace.x2),
         Expanded(
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(1),
+            borderRadius: BorderRadius.circular(PulseRadii.xs),
             child: SizedBox(
               height: 6,
               child: Row(

@@ -100,9 +100,9 @@ class _AuditEntry extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: PulseSpace.x3),
       decoration: BoxDecoration(
-        color: PulseColors.ink800,
+        color: PulseColors.ink800.withValues(alpha: 0.85),
         border: Border.all(color: PulseColors.hairline),
-        borderRadius: BorderRadius.circular(PulseRadii.md),
+        borderRadius: BorderRadius.circular(PulseRadii.xl),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +115,7 @@ class _AuditEntry extends StatelessWidget {
               children: [
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      const EdgeInsets.symmetric(horizontal: PulseSpace.x2, vertical: PulseSpace.x0_5),
                   decoration: BoxDecoration(
                     border: Border.all(color: PulseColors.mist, width: 1),
                     borderRadius: BorderRadius.circular(PulseRadii.sm),
@@ -147,7 +147,7 @@ class _AuditEntry extends StatelessWidget {
                       padding: const EdgeInsets.all(PulseSpace.x2),
                       decoration: BoxDecoration(
                         color: PulseColors.ink900,
-                        borderRadius: BorderRadius.circular(PulseRadii.sm),
+                        borderRadius: BorderRadius.circular(PulseRadii.md),
                         border: Border.all(color: PulseColors.hairline),
                       ),
                       child: Column(
@@ -185,7 +185,7 @@ class _AuditEntry extends StatelessWidget {
                       padding: const EdgeInsets.all(PulseSpace.x2),
                       decoration: BoxDecoration(
                         color: PulseColors.signal.withValues(alpha: 0.06),
-                        borderRadius: BorderRadius.circular(PulseRadii.sm),
+                        borderRadius: BorderRadius.circular(PulseRadii.md),
                         border: Border.all(
                             color: PulseColors.signal.withValues(alpha: 0.3)),
                       ),

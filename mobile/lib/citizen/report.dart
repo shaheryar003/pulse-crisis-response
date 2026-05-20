@@ -131,16 +131,17 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
             runSpacing: PulseSpace.x2,
             children: [
               for (final cat in const [
-                ('flood', 'FLOOD'),
-                ('fire', 'FIRE'),
-                ('accident', 'ACCIDENT'),
-                ('power_outage', 'POWER OUTAGE'),
-                ('water_main_burst', 'WATER MAIN'),
-                ('infrastructure', 'INFRASTRUCTURE'),
-                ('other', 'OTHER'),
+                ('flood', 'FLOOD', Icons.water_drop),
+                ('fire', 'FIRE', Icons.local_fire_department),
+                ('accident', 'ACCIDENT', Icons.car_crash),
+                ('power_outage', 'POWER OUTAGE', Icons.bolt),
+                ('water_main_burst', 'WATER MAIN', Icons.plumbing),
+                ('infrastructure', 'INFRASTRUCTURE', Icons.foundation),
+                ('other', 'OTHER', Icons.error_outline),
               ])
                 _CategoryChip(
                   label: cat.$2,
+                  icon: cat.$3,
                   selected: _category == cat.$1,
                   onTap: () => setState(() => _category = cat.$1),
                 ),
@@ -193,7 +194,7 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
               decoration: BoxDecoration(
                 color: PulseColors.lime.withValues(alpha: 0.06),
                 border: Border.all(color: PulseColors.lime, width: 1),
-                borderRadius: BorderRadius.circular(PulseRadii.sm),
+                borderRadius: BorderRadius.circular(PulseRadii.xl),
               ),
               child: Row(children: [
                 StatusPill(
@@ -212,7 +213,7 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
               decoration: BoxDecoration(
                 color: PulseColors.crimson.withValues(alpha: 0.06),
                 border: Border.all(color: PulseColors.crimson, width: 1),
-                borderRadius: BorderRadius.circular(PulseRadii.sm),
+                borderRadius: BorderRadius.circular(PulseRadii.xl),
               ),
               child: Text(_error!, style: PulseTheme.dataSm(color: PulseColors.crimson)),
             ),
@@ -229,9 +230,10 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
 
 class _CategoryChip extends StatelessWidget {
   final String label;
+  final IconData icon;
   final bool selected;
   final VoidCallback onTap;
-  const _CategoryChip({required this.label, required this.selected, required this.onTap});
+  const _CategoryChip({required this.label, required this.icon, required this.selected, required this.onTap});
   @override
   Widget build(BuildContext context) {
     return Semantics(
@@ -240,21 +242,34 @@ class _CategoryChip extends StatelessWidget {
       label: label,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(PulseRadii.sm),
+        borderRadius: BorderRadius.circular(PulseRadii.xl),
         child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 44),
+          constraints: const BoxConstraints(minWidth: 96, minHeight: 80),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x3, vertical: PulseSpace.x3),
+            padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x2, vertical: PulseSpace.x3),
             decoration: BoxDecoration(
-              color: selected ? PulseColors.signal.withValues(alpha: 0.10) : PulseColors.ink800,
+              color: selected ? PulseColors.signal.withValues(alpha: 0.15) : PulseColors.ink800.withValues(alpha: 0.5),
               border: Border.all(
-                  color: selected ? PulseColors.signal : PulseColors.hairline, width: 1),
-              borderRadius: BorderRadius.circular(PulseRadii.sm),
+                  color: selected ? PulseColors.signal : PulseColors.hairline, width: selected ? 1.5 : 1),
+              borderRadius: BorderRadius.circular(PulseRadii.xl),
+              boxShadow: [
+                if (selected)
+                  BoxShadow(color: PulseColors.signal.withValues(alpha: 0.2), blurRadius: 8, offset: const Offset(0, 2))
+              ],
             ),
-            child: Text(
-              label,
-              style: PulseTheme.label(color: selected ? PulseColors.signal : PulseColors.stone)
-                  .copyWith(fontSize: 11),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: 28, color: selected ? PulseColors.signal : PulseColors.stone),
+                const SizedBox(height: PulseSpace.x2),
+                Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: PulseTheme.label(color: selected ? PulseColors.signal : PulseColors.stone)
+                      .copyWith(fontSize: 10),
+                ),
+              ],
             ),
           ),
         ),
@@ -279,13 +294,19 @@ class _EvidenceCard extends StatelessWidget {
       label: label,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(PulseRadii.md),
+        borderRadius: BorderRadius.circular(PulseRadii.xl),
         child: Container(
           padding: const EdgeInsets.all(PulseSpace.x4),
           decoration: BoxDecoration(
-            color: PulseColors.ink800,
-            border: Border.all(color: hasValue ? color : PulseColors.hairline, width: 1),
-            borderRadius: BorderRadius.circular(PulseRadii.md),
+            color: PulseColors.ink800.withValues(alpha: 0.5),
+            border: Border.all(color: hasValue ? color : PulseColors.hairline, width: hasValue ? 1.5 : 1),
+            borderRadius: BorderRadius.circular(PulseRadii.xl),
+            boxShadow: [
+              if (hasValue)
+                BoxShadow(color: color.withValues(alpha: 0.15), blurRadius: 12, offset: const Offset(0, 2))
+              else
+                const BoxShadow(color: Colors.black26, blurRadius: 6, offset: Offset(0, 2)),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -20,7 +20,7 @@ class DotLeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3),
+      padding: const EdgeInsets.symmetric(vertical: PulseSpace.x1),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.baseline,
         textBaseline: TextBaseline.alphabetic,
@@ -29,7 +29,7 @@ class DotLeader extends StatelessWidget {
           const SizedBox(width: PulseSpace.x2),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 4),
+              padding: const EdgeInsets.only(bottom: PulseSpace.x1),
               child: CustomPaint(
                 size: const Size(double.infinity, 1),
                 painter: _DotLeaderPainter(),
