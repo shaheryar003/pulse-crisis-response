@@ -49,7 +49,7 @@ class PulseTheme {
         color: PulseColors.ink800,
         shape: RoundedRectangleBorder(
           side: BorderSide(color: PulseColors.hairline, width: 1),
-          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
+          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xxl)),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -63,21 +63,21 @@ class PulseTheme {
         floatingLabelBehavior: FloatingLabelBehavior.never,
         hintStyle: textTheme.bodyMedium?.copyWith(color: PulseColors.dim),
         border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
+          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xxl)),
           borderSide: BorderSide(color: PulseColors.hairline, width: 1),
         ),
         enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
+          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xxl)),
           borderSide: BorderSide(color: PulseColors.hairline, width: 1),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
+          borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xxl)),
           borderSide: BorderSide(color: PulseColors.signal, width: 1),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: PulseColors.signal.withValues(alpha: 0.10),
+          backgroundColor: PulseColors.signal.withOpacity(0.10),
           foregroundColor: PulseColors.signal,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
@@ -146,7 +146,7 @@ class PulseTheme {
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: PulseColors.ink700,
-        contentTextStyle: GoogleFonts.dmSans(color: PulseColors.pearl, fontSize: 13),
+        contentTextStyle: GoogleFonts.inter(color: PulseColors.pearl, fontSize: 13),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(PulseRadii.sm),
           side: const BorderSide(color: PulseColors.hairlineStrong, width: 1),
@@ -162,7 +162,7 @@ class PulseTheme {
       displayColor: PulseColors.pearl,
     );
 
-    final display = GoogleFonts.inter(
+    final display = GoogleFonts.outfit(
       color: PulseColors.pearl,
       fontWeight: FontWeight.w700,
       letterSpacing: -0.5,
@@ -201,21 +201,21 @@ class PulseTheme {
         fontSize: 11,
         height: 1.2,
         fontWeight: FontWeight.w600,
-        letterSpacing: 1.2,
+        letterSpacing: 1.5,
       ),
       labelMedium: GoogleFonts.inter(
         color: PulseColors.mist,
         fontSize: 10,
         height: 1.2,
         fontWeight: FontWeight.w600,
-        letterSpacing: 1.4,
+        letterSpacing: 1.5,
       ),
       labelSmall: GoogleFonts.inter(
         color: PulseColors.dim,
         fontSize: 9,
         height: 1.2,
         fontWeight: FontWeight.w600,
-        letterSpacing: 1.4,
+        letterSpacing: 1.5,
       ),
     );
   }
@@ -229,7 +229,7 @@ class PulseTheme {
   static TextStyle dataXs({Color color = PulseColors.mist}) =>
       GoogleFonts.jetBrainsMono(color: color, fontSize: 10, fontWeight: FontWeight.w600, letterSpacing: 0.4);
 
-  static TextStyle display({double size = 26, Color color = PulseColors.pearl}) => GoogleFonts.inter(
+  static TextStyle display({double size = 26, Color color = PulseColors.pearl}) => GoogleFonts.outfit(
         color: color,
         fontSize: size,
         fontWeight: FontWeight.w700,
@@ -241,11 +241,14 @@ class PulseTheme {
         color: color,
         fontSize: 10,
         fontWeight: FontWeight.w600,
-        letterSpacing: 1.4,
+        letterSpacing: 1.5,
       );
 
-  static TextStyle urdu({double size = 14, Color color = PulseColors.pearl}) =>
+  static TextStyle urdu({double size = 15, Color color = PulseColors.pearl}) =>
       GoogleFonts.notoNastaliqUrdu(color: color, fontSize: size, height: 1.6);
+      
+  static TextStyle wordmark({double size = 24, Color color = PulseColors.pearl}) =>
+      GoogleFonts.fraunces(color: color, fontSize: size, fontWeight: FontWeight.w600, fontStyle: FontStyle.italic);
 }
 
 class SeverityPalette {

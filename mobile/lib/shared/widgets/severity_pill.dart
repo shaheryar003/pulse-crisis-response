@@ -4,6 +4,7 @@ import '../theme.dart';
 import '../tokens.dart';
 
 /// Severity 1-5 pill. Square 24x24 box with mono numeral + adjacent label.
+/// Tactical Humanitarian redesign: sharp corners, intense glows for sev 4/5.
 class SeverityPill extends StatefulWidget {
   final int severity;
   final bool withLabel;
@@ -24,7 +25,7 @@ class SeverityPill extends StatefulWidget {
 class _SeverityPillState extends State<SeverityPill> with SingleTickerProviderStateMixin {
   late final AnimationController _ctl = AnimationController(
     vsync: this,
-    duration: const Duration(seconds: 2),
+    duration: const Duration(milliseconds: 1500),
   )..repeat(reverse: true);
 
   @override
@@ -37,17 +38,36 @@ class _SeverityPillState extends State<SeverityPill> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final color = PulseColors.severity(widget.severity);
     final shouldPulse = widget.pulse && widget.severity >= 4;
+    
     final box = AnimatedBuilder(
       animation: _ctl,
       builder: (_, __) {
-        final fillAlpha = shouldPulse ? 0.12 + 0.10 * _ctl.value : 0.12;
+        final double pulseVal = shouldPulse ? _ctl.value : 0.0;
+        final double fillAlpha = shouldPulse ? 0.15 + 0.15 * pulseVal : 0.15;
+        
+        // Dynamic glow based on severity and pulse
+        List<BoxShadow> glow = [];
+        if (widget.severity == 5) {
+          glow = [
+            BoxShadow(color: color.withOpacity(0.40 + 0.30 * pulseVal), blurRadius: 24 + 8 * pulseVal, offset: Offset.zero),
+            BoxShadow(color: color.withOpacity(0.20 + 0.20 * pulseVal), blurRadius: 12, spreadRadius: 2 + 2 * pulseVal, offset: Offset.zero),
+          ];
+        } else if (widget.severity == 4) {
+          glow = [
+            BoxShadow(color: color.withOpacity(0.25 + 0.20 * pulseVal), blurRadius: 16 + 8 * pulseVal, offset: Offset.zero),
+          ];
+        } else if (widget.severity >= 2) {
+          glow = PulseGlow.severity(widget.severity);
+        }
+
         return Container(
           width: widget.size,
           height: widget.size,
           decoration: BoxDecoration(
-            color: color.withValues(alpha: fillAlpha),
-            border: Border.all(color: color, width: 1),
+            color: color.withOpacity(fillAlpha),
+            border: Border.all(color: color.withOpacity(0.8 + 0.2 * pulseVal), width: 1.5),
             borderRadius: BorderRadius.circular(PulseRadii.sm),
+            boxShadow: glow,
           ),
           alignment: Alignment.center,
           child: Text(
@@ -57,6 +77,7 @@ class _SeverityPillState extends State<SeverityPill> with SingleTickerProviderSt
         );
       },
     );
+    
     final labeled = widget.withLabel
         ? Row(
             mainAxisSize: MainAxisSize.min,
@@ -70,9 +91,9 @@ class _SeverityPillState extends State<SeverityPill> with SingleTickerProviderSt
             ],
           )
         : box;
+        
     return Semantics(
-      label:
-          'Severity ${widget.severity} — ${PulseColors.severityLabel(widget.severity)}',
+      label: 'Severity ${widget.severity} — ${PulseColors.severityLabel(widget.severity)}',
       child: labeled,
     );
   }

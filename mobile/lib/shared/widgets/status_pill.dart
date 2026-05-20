@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../theme.dart';
 import '../tokens.dart';
 
-/// Square status pill with a 3px leading colored bar. Not rounded-full.
+/// Tactical Humanitarian StatusPill.
+/// Sharp corners (2px radius), left-side color bar indicator, ALL CAPS label.
 class StatusPill extends StatelessWidget {
   final String label;
   final Color color;
@@ -52,9 +53,14 @@ class StatusPill extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(PulseRadii.xl),
-        border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
+        color: PulseColors.ink800,
+        borderRadius: BorderRadius.circular(PulseRadii.sm),
+        border: Border(
+          left: BorderSide(color: color, width: 3),
+          top: const BorderSide(color: PulseColors.hairline, width: 1),
+          right: const BorderSide(color: PulseColors.hairline, width: 1),
+          bottom: const BorderSide(color: PulseColors.hairline, width: 1),
+        ),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(

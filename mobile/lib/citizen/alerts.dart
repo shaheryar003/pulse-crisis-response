@@ -143,16 +143,13 @@ class _AlertCard extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(PulseRadii.xl),
-        child: IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(left: BorderSide(color: retracted ? PulseColors.dim : accent, width: 3)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Left accent strip — 3dp, uniform color avoids the BorderRadius constraint.
-              Container(width: 3, color: retracted ? PulseColors.dim : accent),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
                     // header
                     Padding(
                       padding: const EdgeInsets.fromLTRB(
@@ -281,9 +278,6 @@ class _AlertCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
             ],
           ),
         ),
