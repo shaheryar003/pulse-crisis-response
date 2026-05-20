@@ -49,12 +49,12 @@ class _SeverityPillState extends State<SeverityPill> with SingleTickerProviderSt
         List<BoxShadow> glow = [];
         if (widget.severity == 5) {
           glow = [
-            BoxShadow(color: color.withOpacity(0.40 + 0.30 * pulseVal), blurRadius: 24 + 8 * pulseVal, offset: Offset.zero),
-            BoxShadow(color: color.withOpacity(0.20 + 0.20 * pulseVal), blurRadius: 12, spreadRadius: 2 + 2 * pulseVal, offset: Offset.zero),
+            BoxShadow(color: color.withValues(alpha: 0.40 + 0.30 * pulseVal), blurRadius: 24 + 8 * pulseVal, offset: Offset.zero),
+            BoxShadow(color: color.withValues(alpha: 0.20 + 0.20 * pulseVal), blurRadius: 12, spreadRadius: 2 + 2 * pulseVal, offset: Offset.zero),
           ];
         } else if (widget.severity == 4) {
           glow = [
-            BoxShadow(color: color.withOpacity(0.25 + 0.20 * pulseVal), blurRadius: 16 + 8 * pulseVal, offset: Offset.zero),
+            BoxShadow(color: color.withValues(alpha: 0.25 + 0.20 * pulseVal), blurRadius: 16 + 8 * pulseVal, offset: Offset.zero),
           ];
         } else if (widget.severity >= 2) {
           glow = PulseGlow.severity(widget.severity);
@@ -64,8 +64,8 @@ class _SeverityPillState extends State<SeverityPill> with SingleTickerProviderSt
           width: widget.size,
           height: widget.size,
           decoration: BoxDecoration(
-            color: color.withOpacity(fillAlpha),
-            border: Border.all(color: color.withOpacity(0.8 + 0.2 * pulseVal), width: 1.5),
+            color: color.withValues(alpha: fillAlpha),
+            border: Border.all(color: color.withValues(alpha: 0.8 + 0.2 * pulseVal), width: 1.5),
             borderRadius: BorderRadius.circular(PulseRadii.sm),
             boxShadow: glow,
           ),

@@ -81,25 +81,25 @@ class PulseGlow {
   PulseGlow._();
 
   static List<BoxShadow> signal({double opacity = 0.25, double blur = 16}) => [
-        BoxShadow(color: PulseColors.signal.withOpacity(opacity), blurRadius: blur, offset: Offset.zero),
+        BoxShadow(color: PulseColors.signal.withValues(alpha: opacity), blurRadius: blur, offset: Offset.zero),
       ];
       
   static List<BoxShadow> amber({double opacity = 0.25, double blur = 16}) => [
-        BoxShadow(color: PulseColors.amber.withOpacity(opacity), blurRadius: blur, offset: Offset.zero),
+        BoxShadow(color: PulseColors.amber.withValues(alpha: opacity), blurRadius: blur, offset: Offset.zero),
       ];
       
   static List<BoxShadow> crimson({double opacity = 0.35, double blur = 24}) => [
-        BoxShadow(color: PulseColors.crimson.withOpacity(opacity), blurRadius: blur, offset: Offset.zero),
+        BoxShadow(color: PulseColors.crimson.withValues(alpha: opacity), blurRadius: blur, offset: Offset.zero),
       ];
       
   static List<BoxShadow> lime({double opacity = 0.20, double blur = 12}) => [
-        BoxShadow(color: PulseColors.lime.withOpacity(opacity), blurRadius: blur, offset: Offset.zero),
+        BoxShadow(color: PulseColors.lime.withValues(alpha: opacity), blurRadius: blur, offset: Offset.zero),
       ];
 
   static List<BoxShadow> severity(int s) => switch (s) {
         5 => [
-            BoxShadow(color: PulseColors.sev5.withOpacity(0.50), blurRadius: 32, offset: Offset.zero),
-            BoxShadow(color: PulseColors.sev5.withOpacity(0.20), blurRadius: 16, spreadRadius: 4, offset: Offset.zero),
+            BoxShadow(color: PulseColors.sev5.withValues(alpha: 0.50), blurRadius: 32, offset: Offset.zero),
+            BoxShadow(color: PulseColors.sev5.withValues(alpha: 0.20), blurRadius: 16, spreadRadius: 4, offset: Offset.zero),
           ],
         4 => crimson(),
         3 => amber(),

@@ -77,7 +77,7 @@ class PulseTheme {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: PulseColors.signal.withOpacity(0.10),
+          backgroundColor: PulseColors.signal.withValues(alpha: 0.10),
           foregroundColor: PulseColors.signal,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
