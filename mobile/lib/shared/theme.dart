@@ -7,7 +7,7 @@ class PulseTheme {
   PulseTheme._();
 
   static ThemeData dark() {
-    final scheme = const ColorScheme.dark(
+    const scheme = ColorScheme.dark(
       brightness: Brightness.dark,
       primary: PulseColors.signal,
       onPrimary: PulseColors.ink900,

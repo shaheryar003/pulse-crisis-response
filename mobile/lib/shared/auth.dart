@@ -69,7 +69,7 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final _phone = TextEditingController(text: '03001234567');
+  final _phone = TextEditingController(text: '03149946492');
   final _otp = TextEditingController();
   final _api = TextEditingController(text: session.apiBase);
   String _role = 'citizen';
@@ -161,7 +161,7 @@ class _SignInPageState extends State<SignInPage> {
                       _Field(
                         label: 'PHONE',
                         controller: _phone,
-                        hint: '03001234567',
+                        hint: '03149946492',
                         keyboardType: TextInputType.phone,
                         mono: true,
                       ),

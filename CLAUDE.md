@@ -3,7 +3,7 @@
 > Read this on every new Claude session. It is the single source of truth for what this project is, how it is structured, and how to work on it.
 
 ## What this is
-**Pulse** is a multi-agent urban crisis response system for Pakistani cities, built for the AISEEKHO 2026 hackathon. It uses Google Antigravity Skills to orchestrate 17 specialist crisis agents (plus a PM + Verifier + Commander), exposes them through a FastAPI backend, and surfaces them through a Flutter mobile app with three role-based surfaces: **Citizen**, **Responder**, **Command Center**.
+**Pulse** is a multi-agent urban crisis response system for Pakistani cities, built for the AISEEKHO 2026 hackathon. It uses Google Antigravity Skills to orchestrate 17 specialist crisis agents (plus a PM + Verifier + Commander + 4 UI/UX meta skills), exposes them through a FastAPI backend, and surfaces them through a Flutter mobile app with three role-based surfaces: **Citizen**, **Responder**, **Command Center**.
 
 ## How it was built
 9 sprints with **PM Agent + Verifier Agent** orchestration. Every sprint has:
@@ -16,7 +16,7 @@ Master rubric verdict lives at `sprints/verdicts/rubric.json` — `strong` on al
 
 ## Architecture at a glance
 ```
-.agent/skills/    20 Antigravity Skills (pm, verifier, commander + 17 specialists)
+.agent/skills/    24 Antigravity Skills (pm, verifier, commander + 17 specialists + 4 UI/UX meta)
 backend/app/      Python mirror of every skill + FastAPI + SQLite + WebSocket /trace
 mobile/lib/       Flutter app (3 surfaces, dark "Tactical Humanitarian" design system)
 sim/              Islamabad geo fixtures + 6 mock signal streams
@@ -82,6 +82,7 @@ All four validate green via `python scenarios/run_demo.py --all --validate`.
   - `SindhTile` — subtle 8-point star motif (used 4% opacity, twice per screen max)
   - `CtaButton` — `▸ LABEL` outlined teal CTA
 - **Map tiles**: CartoDB dark (`https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png`). NOT default OSM.
+- **String catalog** lives in `mobile/lib/shared/strings.dart` — `PulseStrings.get(key, locale)`. All user-visible strings (EN + UR) must be in this catalog; do not hardcode in widget files.
 
 ## Backend conventions
 - **All agents are offline-deterministic by default.** LLM (Gemini Flash) is a mock unless `GEMINI_API_KEY` is set — see `backend/app/services/llm.py`. This makes tests reproducible and the demo network-independent.
@@ -115,3 +116,22 @@ All four validate green via `python scenarios/run_demo.py --all --validate`.
 - Don't bypass acceptance criteria. If something fails, fix it or document remediation; don't lower the bar.
 - Every artifact is JSON with the envelope schema in `sprints/methodology.md`. New agents must conform.
 - The repo is the source of truth, not memory. When in doubt, read the file.
+
+## UI/UX meta skills (Sprint 9+)
+Four skills handle the design-integrity and implementation loop. Always run auditors before `@flutter-dev`.
+
+| Skill | Type | Purpose | Invoke when |
+|---|---|---|---|
+| `@ux-auditor` | auditor | Scans every Dart file for token violations, hardcoded values, missing states | Start of any UI sprint; re-run after `@flutter-dev` closes tasks |
+| `@a11y-checker` | auditor | WCAG contrast, Semantics coverage, 48dp touch targets, RTL focus order | Alongside `@ux-auditor`; any sprint touching Citizen or Command screens |
+| `@i18n-agent` | auditor | Owns EN+UR string catalog, enforces Noto Nastaliq + RTL, gates `@stakeholder-comms` alerts | Before any text-bearing screen ships; when `@stakeholder-comms` emits new alert copy |
+| `@flutter-dev` | implementer | Implements fixes from audit reports — token subs, Semantics, RTL, new widgets | After audit reports are complete; never before |
+
+**Correct execution order for any UI change:**
+```
+@ux-auditor + @a11y-checker + @i18n-agent (parallel)
+  → @flutter-dev (implements all findings)
+    → @ux-auditor (re-scan, confirms zero P1 violations)
+      → @commander (full scenario A/B/C/D dry-run)
+        → @verifier (sprint sign-off)
+```

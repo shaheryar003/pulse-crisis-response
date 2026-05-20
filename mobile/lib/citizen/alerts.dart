@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../models/alert.dart';
 import '../services/api.dart';
+import '../shared/strings.dart';
 import '../shared/theme.dart';
 import '../shared/tokens.dart';
+import '../shared/widgets/approval_gate_badge.dart';
+import '../shared/widgets/error_box.dart';
 import '../shared/widgets/section_label.dart';
 import '../shared/widgets/status_pill.dart';
 
@@ -55,7 +58,7 @@ class _CitizenAlertsPageState extends State<CitizenAlertsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Alerts', style: PulseTheme.display(size: 26)),
+                  Text(PulseStrings.get('citizen.alerts.title'), style: PulseTheme.display(size: 26)),
                   const SizedBox(height: PulseSpace.x1),
                   EmDashLeader('${_alerts.length} issued · $retractedCount retracted'),
                 ],
@@ -74,16 +77,15 @@ class _CitizenAlertsPageState extends State<CitizenAlertsPage> {
             )
           else if (_error != null)
             SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(PulseSpace.x6),
-                child: Text(_error!, style: PulseTheme.dataSm(color: PulseColors.crimson)),
-              ),
+              child: ErrorBox(error: _error!, onRetry: _refresh),
             )
           else if (_alerts.isEmpty)
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.all(PulseSpace.x8),
-                child: Center(child: EmDashLeader('No alerts yet — run a scenario from Command.')),
+                padding: const EdgeInsets.all(PulseSpace.x8),
+                child: Center(
+                  child: EmDashLeader(PulseStrings.get('citizen.alerts.empty')),
+                ),
               ),
             )
           else
@@ -106,14 +108,18 @@ class _AlertCard extends StatelessWidget {
   final AlertItem alert;
   const _AlertCard({required this.alert});
 
+  /// Color derived from incidentType field (structured) rather than English
+  /// keyword matching — works correctly for Urdu-only alerts.
   Color _channelAccent() {
     if (alert.isRetracted) return PulseColors.dim;
-    final body = (alert.bodyEn ?? '').toLowerCase();
-    if (body.contains('flood') || body.contains('water')) return PulseColors.crimson;
-    if (body.contains('fire')) return PulseColors.crimson;
-    if (body.contains('heat')) return PulseColors.amber;
-    if (body.contains('power')) return PulseColors.amber;
-    return PulseColors.signal;
+    return switch (alert.incidentType) {
+      'flood' || 'water_main_burst' => PulseColors.crimson,
+      'fire' => PulseColors.crimson,
+      'heat' || 'heatwave' => PulseColors.amber,
+      'power_outage' => PulseColors.amber,
+      'accident' || 'infrastructure' => PulseColors.saffron,
+      _ => PulseColors.signal,
+    };
   }
 
   String _fmtTs(String iso) {
@@ -134,114 +140,155 @@ class _AlertCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: PulseColors.ink800,
-        border: Border(
-          left: BorderSide(color: retracted ? PulseColors.dim : accent, width: 3),
-          top: const BorderSide(color: PulseColors.hairline, width: 1),
-          right: const BorderSide(color: PulseColors.hairline, width: 1),
-          bottom: const BorderSide(color: PulseColors.hairline, width: 1),
-        ),
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(PulseRadii.md),
-          bottomRight: Radius.circular(PulseRadii.md),
-        ),
+        border: Border.all(color: PulseColors.hairline),
+        borderRadius: BorderRadius.circular(PulseRadii.sm),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // header
-          Padding(
-            padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x3, PulseSpace.x4, PulseSpace.x2),
-            child: Row(
-              children: [
-                Text(
-                  retracted ? '⊘' : '⚠',
-                  style: PulseTheme.data(size: 14, color: accent, weight: FontWeight.w700),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(PulseRadii.sm),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Left accent strip — 3dp, uniform color avoids the BorderRadius constraint.
+              Container(width: 3, color: retracted ? PulseColors.dim : accent),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // header
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                          PulseSpace.x4, PulseSpace.x3, PulseSpace.x4, PulseSpace.x2),
+                      child: Row(
+                        children: [
+                          Text(
+                            retracted ? '⊘' : '⚠',
+                            style: PulseTheme.data(
+                                size: 14, color: accent, weight: FontWeight.w700),
+                          ),
+                          const SizedBox(width: PulseSpace.x2),
+                          Text(
+                            retracted
+                                ? PulseStrings.get('common.retracted')
+                                : 'PUBLIC ALERT',
+                            style: PulseTheme.label(color: accent),
+                          ),
+                          const Spacer(),
+                          Text(_fmtTs(alert.issuedAt), style: PulseTheme.dataXs()),
+                          const SizedBox(width: PulseSpace.x3),
+                          Text(idShort, style: PulseTheme.dataXs()),
+                        ],
+                      ),
+                    ),
+                    Container(height: 1, color: PulseColors.hairline),
+                    // body
+                    Padding(
+                      padding: const EdgeInsets.all(PulseSpace.x4),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (alert.bodyEn != null && alert.bodyEn!.isNotEmpty)
+                            Text(
+                              alert.bodyEn!,
+                              style: PulseTheme.data(size: 13, color: PulseColors.pearl)
+                                  .copyWith(
+                                decoration: retracted ? TextDecoration.lineThrough : null,
+                                decorationColor: PulseColors.dim,
+                                decorationThickness: 1.5,
+                                color: retracted ? PulseColors.dim : PulseColors.pearl,
+                              ),
+                            ),
+                          if (alert.bodyUr != null && alert.bodyUr!.isNotEmpty) ...[
+                            const SizedBox(height: PulseSpace.x3),
+                            Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Text(
+                                alert.bodyUr!,
+                                style: PulseTheme.urdu(
+                                        size: 15,
+                                        color: retracted
+                                            ? PulseColors.dim
+                                            : PulseColors.stone)
+                                    .copyWith(
+                                        decoration: retracted
+                                            ? TextDecoration.lineThrough
+                                            : null),
+                              ),
+                            ),
+                          ],
+                          if (retracted) ...[
+                            const SizedBox(height: PulseSpace.x4),
+                            Row(children: [
+                              Text(
+                                PulseStrings.get(
+                                    'citizen.alerts.retraction.correction_label'),
+                                style: PulseTheme.label(color: PulseColors.signal),
+                              ),
+                              const SizedBox(width: PulseSpace.x3),
+                              Expanded(
+                                  child: Container(
+                                      height: 1,
+                                      color: PulseColors.hairlineStrong)),
+                            ]),
+                            const SizedBox(height: PulseSpace.x3),
+                            Text(
+                              PulseStrings.get(
+                                  'citizen.alerts.retraction.correction_en'),
+                              style: PulseTheme.data(size: 12, color: PulseColors.pearl),
+                            ),
+                            const SizedBox(height: PulseSpace.x2),
+                            Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Text(
+                                PulseStrings.get(
+                                    'citizen.alerts.retraction.correction_ur',
+                                    PulseStrings.ur),
+                                style: PulseTheme.urdu(size: 14, color: PulseColors.stone),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    Container(height: 1, color: PulseColors.hairline),
+                    // footer
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                          PulseSpace.x4, PulseSpace.x2, PulseSpace.x4, PulseSpace.x3),
+                      child: Row(
+                        children: [
+                          if (retracted)
+                            StatusPill(
+                                label: PulseStrings.get('common.retracted'),
+                                color: PulseColors.dim,
+                                dense: true)
+                          else
+                            StatusPill(
+                                label: PulseStrings.get('common.active'),
+                                color: accent,
+                                dense: true),
+                          const SizedBox(width: PulseSpace.x3),
+                          if (retracted && alert.retractedAt != null)
+                            Text(
+                              'retracted ${_fmtTs(alert.retractedAt!)}',
+                              style: PulseTheme.dataXs(),
+                            )
+                          else if (alert.requiresHumanApproval)
+                            const ApprovalGateBadge()
+                          else
+                            Text(
+                              PulseStrings.get('citizen.alerts.helpline'),
+                              style: PulseTheme.dataXs(),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: PulseSpace.x2),
-                Text(
-                  retracted ? 'RETRACTED' : 'PUBLIC ALERT',
-                  style: PulseTheme.label(color: accent),
-                ),
-                const Spacer(),
-                Text(_fmtTs(alert.issuedAt), style: PulseTheme.dataXs()),
-                const SizedBox(width: PulseSpace.x3),
-                Text(idShort, style: PulseTheme.dataXs()),
-              ],
-            ),
+              ),
+            ],
           ),
-          Container(height: 1, color: PulseColors.hairline),
-          // body
-          Padding(
-            padding: const EdgeInsets.all(PulseSpace.x4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (alert.bodyEn != null && alert.bodyEn!.isNotEmpty)
-                  Text(
-                    alert.bodyEn!,
-                    style: PulseTheme.data(size: 13, color: PulseColors.pearl).copyWith(
-                      decoration: retracted ? TextDecoration.lineThrough : null,
-                      decorationColor: PulseColors.dim,
-                      decorationThickness: 1.5,
-                      color: retracted ? PulseColors.dim : PulseColors.pearl,
-                    ),
-                  ),
-                if (alert.bodyUr != null && alert.bodyUr!.isNotEmpty) ...[
-                  const SizedBox(height: PulseSpace.x3),
-                  Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: Text(
-                      alert.bodyUr!,
-                      style: PulseTheme.urdu(size: 15, color: retracted ? PulseColors.dim : PulseColors.stone)
-                          .copyWith(decoration: retracted ? TextDecoration.lineThrough : null),
-                    ),
-                  ),
-                ],
-                if (retracted) ...[
-                  const SizedBox(height: PulseSpace.x4),
-                  Row(children: [
-                    Text('CORRECTION', style: PulseTheme.label(color: PulseColors.signal)),
-                    const SizedBox(width: PulseSpace.x3),
-                    Expanded(child: Container(height: 1, color: PulseColors.hairlineStrong)),
-                  ]),
-                  const SizedBox(height: PulseSpace.x3),
-                  Text(
-                    'The original classification has been retracted. Updated agencies are responding. Apologies for the alarm.',
-                    style: PulseTheme.data(size: 12, color: PulseColors.pearl),
-                  ),
-                  const SizedBox(height: PulseSpace.x2),
-                  Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: Text(
-                      'پہلی اطلاع واپس لی جا چکی ہے۔ متعلقہ ادارے کام کر رہے ہیں۔',
-                      style: PulseTheme.urdu(size: 14, color: PulseColors.stone),
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          Container(height: 1, color: PulseColors.hairline),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x2, PulseSpace.x4, PulseSpace.x3),
-            child: Row(
-              children: [
-                if (retracted)
-                  StatusPill(label: 'RETRACTED', color: PulseColors.dim, dense: true)
-                else
-                  StatusPill(label: 'ACTIVE', color: accent, dense: true),
-                const SizedBox(width: PulseSpace.x3),
-                if (retracted && alert.retractedAt != null)
-                  Text(
-                    'retracted ${_fmtTs(alert.retractedAt!)}',
-                    style: PulseTheme.dataXs(),
-                  )
-                else
-                  Text('helpline 1122', style: PulseTheme.dataXs()),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

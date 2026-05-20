@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../models/dispatch.dart';
 import '../services/api.dart';
+import '../shared/strings.dart';
 import '../shared/theme.dart';
 import '../shared/tokens.dart';
 import '../shared/widgets/dot_leader.dart';
+import '../shared/widgets/error_box.dart';
 import '../shared/widgets/section_label.dart';
 import '../shared/widgets/severity_pill.dart';
 import '../shared/widgets/status_pill.dart';
@@ -68,7 +70,8 @@ class _ResponderQueuePageState extends State<ResponderQueuePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Dispatch queue', style: PulseTheme.display(size: 26)),
+                  Text(PulseStrings.get('responder.queue.title'),
+                      style: PulseTheme.display(size: 26)),
                   const SizedBox(height: PulseSpace.x1),
                   EmDashLeader('asset $_assetId · ${_items.length} active'),
                   const SizedBox(height: PulseSpace.x5),
@@ -77,8 +80,8 @@ class _ResponderQueuePageState extends State<ResponderQueuePage> {
                       child: TextField(
                         controller: _assetCtl,
                         style: PulseTheme.data(size: 14),
-                        decoration: const InputDecoration(
-                          hintText: 'asset id (e.g. rescue-3)',
+                        decoration: InputDecoration(
+                          hintText: PulseStrings.get('responder.queue.asset_hint'),
                         ),
                         onSubmitted: (v) {
                           _assetId = v.trim();
@@ -92,7 +95,7 @@ class _ResponderQueuePageState extends State<ResponderQueuePage> {
                         _assetId = _assetCtl.text.trim();
                         _refresh();
                       },
-                      child: const Text('LOAD'),
+                      child: Text(PulseStrings.get('common.load')),
                     ),
                   ]),
                 ],
@@ -111,16 +114,15 @@ class _ResponderQueuePageState extends State<ResponderQueuePage> {
             )
           else if (_error != null)
             SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(PulseSpace.x6),
-                child: Text(_error!, style: PulseTheme.dataSm(color: PulseColors.crimson)),
-              ),
+              child: ErrorBox(error: _error!, onRetry: _refresh),
             )
           else if (_items.isEmpty)
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.all(PulseSpace.x8),
-                child: Center(child: EmDashLeader('No active dispatches for this asset.')),
+                padding: const EdgeInsets.all(PulseSpace.x8),
+                child: Center(
+                  child: EmDashLeader(PulseStrings.get('responder.queue.empty')),
+                ),
               ),
             )
           else
@@ -161,6 +163,8 @@ class _DispatchCard extends StatelessWidget {
     };
     final idShort = dispatch.id.length > 12 ? dispatch.id.substring(0, 12) : dispatch.id;
     final etaMin = ((dispatch.etaS ?? 0) ~/ 60);
+    // Use actual incident severity if available; fall back to 3 (MAJOR) not a hardcoded 4.
+    final severity = dispatch.incidentSeverity ?? 3;
     return Container(
       decoration: BoxDecoration(
         color: PulseColors.ink800,
@@ -179,7 +183,10 @@ class _DispatchCard extends StatelessWidget {
             ]),
             const SizedBox(height: PulseSpace.x3),
             Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              SeverityPill(severity: 4, withLabel: false, pulse: dispatch.priority == 'urgent'),
+              SeverityPill(
+                  severity: severity,
+                  withLabel: false,
+                  pulse: dispatch.priority == 'urgent'),
               const SizedBox(width: PulseSpace.x3),
               Expanded(
                 child: Text(
@@ -191,12 +198,26 @@ class _DispatchCard extends StatelessWidget {
             const SizedBox(height: PulseSpace.x3),
             Container(height: 1, color: PulseColors.hairline),
             const SizedBox(height: PulseSpace.x3),
-            DotLeader(label: 'eta', value: '${etaMin}m'),
-            DotLeader(label: 'status', value: dispatch.status, valueColor: priorityColor),
+            // Show destination if available (Tier-6 destination.zone / destination.label)
+            if (dispatch.destinationDisplay != '—')
+              DotLeader(
+                label: PulseStrings.get('responder.queue.destination'),
+                value: dispatch.destinationDisplay,
+                valueColor: PulseColors.signal,
+              ),
+            DotLeader(
+                label: PulseStrings.get('responder.queue.eta'),
+                value: '${etaMin}m'),
+            DotLeader(
+                label: 'status',
+                value: dispatch.status,
+                valueColor: priorityColor),
             const SizedBox(height: PulseSpace.x3),
-            Text('INSTRUCTIONS', style: PulseTheme.label()),
+            Text(PulseStrings.get('responder.queue.instructions'),
+                style: PulseTheme.label()),
             const SizedBox(height: PulseSpace.x2),
-            Text(dispatch.instructions, style: PulseTheme.data(size: 13, color: PulseColors.pearl)),
+            Text(dispatch.instructions,
+                style: PulseTheme.data(size: 13, color: PulseColors.pearl)),
             const SizedBox(height: PulseSpace.x4),
             Container(height: 1, color: PulseColors.hairline),
             const SizedBox(height: PulseSpace.x3),
@@ -254,43 +275,58 @@ class _ActionButton extends StatelessWidget {
             ? PulseColors.signal
             : PulseColors.stone;
     final disabled = onPressed == null;
-    return InkWell(
-      onTap: onPressed,
-      borderRadius: BorderRadius.circular(PulseRadii.sm),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x4, vertical: PulseSpace.x3),
-        decoration: BoxDecoration(
-          color: active
-              ? color.withValues(alpha: 0.10)
-              : primary
-                  ? color.withValues(alpha: 0.06)
-                  : Colors.transparent,
-          border: Border.all(
-            color: disabled
-                ? PulseColors.hairline
-                : active
-                    ? color
-                    : primary
+    return Semantics(
+      button: true,
+      label: label,
+      enabled: !disabled,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(PulseRadii.sm),
+        // 48dp minimum tap target
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+                horizontal: PulseSpace.x4, vertical: PulseSpace.x4),
+            decoration: BoxDecoration(
+              color: active
+                  ? color.withValues(alpha: 0.10)
+                  : primary
+                      ? color.withValues(alpha: 0.06)
+                      : Colors.transparent,
+              border: Border.all(
+                color: disabled
+                    ? PulseColors.hairline
+                    : active
                         ? color
-                        : PulseColors.hairlineStrong,
-            width: 1,
-          ),
-          borderRadius: BorderRadius.circular(PulseRadii.sm),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (primary && !active)
-              Text('▸', style: PulseTheme.data(size: 12, color: color, weight: FontWeight.w700)),
-            if (primary && !active) const SizedBox(width: PulseSpace.x2),
-            if (active)
-              Text('✓', style: PulseTheme.data(size: 11, color: color, weight: FontWeight.w700)),
-            if (active) const SizedBox(width: PulseSpace.x2),
-            Text(
-              label,
-              style: PulseTheme.label(color: disabled ? PulseColors.dim : color).copyWith(fontSize: 10),
+                        : primary
+                            ? color
+                            : PulseColors.hairlineStrong,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(PulseRadii.sm),
             ),
-          ],
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (primary && !active)
+                  Text('▸',
+                      style: PulseTheme.data(
+                          size: 12, color: color, weight: FontWeight.w700)),
+                if (primary && !active) const SizedBox(width: PulseSpace.x2),
+                if (active)
+                  Text('✓',
+                      style: PulseTheme.data(
+                          size: 11, color: color, weight: FontWeight.w700)),
+                if (active) const SizedBox(width: PulseSpace.x2),
+                Text(
+                  label,
+                  style: PulseTheme.label(color: disabled ? PulseColors.dim : color)
+                      .copyWith(fontSize: 10),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

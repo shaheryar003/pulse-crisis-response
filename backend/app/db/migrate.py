@@ -50,7 +50,7 @@ def _seed_resources(conn: sqlite3.Connection) -> None:
 
 def _seed_users(conn: sqlite3.Connection) -> None:
     seeds = [
-        ("u_citizen_demo", "h_03001234567", "citizen", 0.5),
+        ("u_citizen_demo", "h_03149946492", "citizen", 0.5),
         ("u_responder_demo", "h_03009876543", "responder", 0.9),
         ("u_command_demo", "h_03001112222", "command", 1.0),
     ]

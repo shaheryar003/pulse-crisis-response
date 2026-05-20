@@ -5,7 +5,7 @@ import hashlib
 from typing import Iterable
 
 from ..base import Agent, new_id
-from ...services.geo import zone_for
+from ...services.geo import nearest_zone, zone_for
 
 
 class CitizenReportAgent(Agent):
@@ -24,6 +24,8 @@ class CitizenReportAgent(Agent):
         geo = r.get("geo") or {}
         lat, lon = geo.get("lat"), geo.get("lon")
         zone = zone_for(lat, lon) if lat is not None else None
+        if zone is None and lat is not None:
+            zone = nearest_zone(lat, lon)
         accuracy_m = geo.get("accuracy_m", 50)
         geo_quality = max(0.0, min(1.0, 1.0 - accuracy_m / 100.0))
         user_trust = float(r.get("user_trust", 0.4))

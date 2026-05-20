@@ -57,17 +57,23 @@ class _SeverityPillState extends State<SeverityPill> with SingleTickerProviderSt
         );
       },
     );
-    if (!widget.withLabel) return box;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        box,
-        const SizedBox(width: PulseSpace.x2),
-        Text(
-          PulseColors.severityLabel(widget.severity),
-          style: PulseTheme.label(color: color),
-        ),
-      ],
+    final labeled = widget.withLabel
+        ? Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              box,
+              const SizedBox(width: PulseSpace.x2),
+              Text(
+                PulseColors.severityLabel(widget.severity),
+                style: PulseTheme.label(color: color),
+              ),
+            ],
+          )
+        : box;
+    return Semantics(
+      label:
+          'Severity ${widget.severity} — ${PulseColors.severityLabel(widget.severity)}',
+      child: labeled,
     );
   }
 }

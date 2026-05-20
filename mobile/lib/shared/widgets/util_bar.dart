@@ -54,28 +54,43 @@ class UtilBar extends StatelessWidget implements PreferredSizeWidget {
             ...List.generate(tabs.length, (i) {
               final t = tabs[i];
               final active = i == activeIndex;
-              return Padding(
-                padding: const EdgeInsets.only(right: PulseSpace.x5),
-                child: InkWell(
-                  onTap: onTab == null ? null : () => onTab!(i),
-                  borderRadius: BorderRadius.circular(2),
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 2, bottom: 4),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: active ? PulseColors.pearl : Colors.transparent,
-                          width: 1,
+              return Semantics(
+                button: true,
+                selected: active,
+                label: t.label,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: PulseSpace.x5),
+                  // 48dp minimum tap target via SizedBox height + centered content
+                  child: SizedBox(
+                    height: 48,
+                    child: InkWell(
+                      onTap: onTab == null ? null : () => onTab!(i),
+                      borderRadius: BorderRadius.circular(2),
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.only(top: 2, bottom: 4),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: active
+                                    ? PulseColors.pearl
+                                    : Colors.transparent,
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            t.label.toUpperCase(),
+                            style: GoogleFonts.dmSans(
+                              color: active
+                                  ? PulseColors.pearl
+                                  : PulseColors.mist,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1.2,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    child: Text(
-                      t.label.toUpperCase(),
-                      style: GoogleFonts.dmSans(
-                        color: active ? PulseColors.pearl : PulseColors.mist,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.2,
                       ),
                     ),
                   ),
@@ -124,24 +139,41 @@ class _RoleIndicator extends StatelessWidget {
 }
 
 /// Round, hairline-only icon button for utility bar actions.
+/// Minimum effective tap target: 48dp via invisible padding in SizedBox.
 class UtilIconButton extends StatelessWidget {
   final IconData icon;
   final String? tooltip;
   final VoidCallback? onPressed;
-  const UtilIconButton({super.key, required this.icon, this.tooltip, this.onPressed});
+  const UtilIconButton({
+    super.key,
+    required this.icon,
+    this.tooltip,
+    this.onPressed,
+  });
+
   @override
   Widget build(BuildContext context) {
-    final btn = InkWell(
-      onTap: onPressed,
-      borderRadius: BorderRadius.circular(PulseRadii.sm),
-      child: Container(
-        width: 32,
-        height: 32,
-        decoration: BoxDecoration(
-          border: Border.all(color: PulseColors.hairline),
+    final btn = Semantics(
+      button: true,
+      label: tooltip,
+      child: SizedBox(
+        width: 40,
+        height: 40,
+        child: InkWell(
+          onTap: onPressed,
           borderRadius: BorderRadius.circular(PulseRadii.sm),
+          child: Center(
+            child: Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                border: Border.all(color: PulseColors.hairline),
+                borderRadius: BorderRadius.circular(PulseRadii.sm),
+              ),
+              child: Icon(icon, size: 14, color: PulseColors.stone),
+            ),
+          ),
         ),
-        child: Icon(icon, size: 14, color: PulseColors.stone),
       ),
     );
     if (tooltip != null) return Tooltip(message: tooltip!, child: btn);

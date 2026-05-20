@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../models/incident.dart';
+import '../strings.dart';
 import '../theme.dart';
 import '../tokens.dart';
 import 'dot_leader.dart';
+import 'forecast_bands.dart';
 import 'severity_pill.dart';
 import 'sparkbar.dart';
 import 'status_pill.dart';
@@ -14,6 +16,7 @@ class IncidentCard extends StatelessWidget {
   final bool dense;
   final VoidCallback? onTap;
   final bool selected;
+  final String locale;
   const IncidentCard({
     super.key,
     required this.incident,
@@ -21,12 +24,18 @@ class IncidentCard extends StatelessWidget {
     this.dense = false,
     this.onTap,
     this.selected = false,
+    this.locale = PulseStrings.en,
   });
 
   String _formatNumber(int n) {
     if (n >= 1000000) return '${(n / 1e6).toStringAsFixed(1)}M';
     if (n >= 1000) return '${(n / 1000).toStringAsFixed(n >= 10000 ? 0 : 1)}k';
     return '$n';
+  }
+
+  String _statusFooter(Incident i) {
+    if (i.status == 'retracted') return 'retracted · audit logged';
+    return 'tracking · responders dispatched';
   }
 
   @override
@@ -71,6 +80,21 @@ class IncidentCard extends StatelessWidget {
                       Text('·', style: PulseTheme.dataXs()),
                       const SizedBox(width: PulseSpace.x2),
                       Text(idShort, style: PulseTheme.dataXs()),
+                      if (incident.spreadRisk != null) ...[
+                        const SizedBox(width: PulseSpace.x2),
+                        Text('·', style: PulseTheme.dataXs()),
+                        const SizedBox(width: PulseSpace.x2),
+                        Text(
+                          'spread ${incident.spreadRisk}',
+                          style: PulseTheme.dataXs(
+                            color: incident.spreadRisk == 'high'
+                                ? PulseColors.crimson
+                                : incident.spreadRisk == 'medium'
+                                    ? PulseColors.amber
+                                    : PulseColors.mist,
+                          ),
+                        ),
+                      ],
                     ]),
                   ],
                 ),
@@ -86,13 +110,25 @@ class IncidentCard extends StatelessWidget {
             const SizedBox(height: PulseSpace.x3),
             Container(height: 1, color: PulseColors.hairline),
             const SizedBox(height: PulseSpace.x3),
-            if (incident.popP50 != null) DotLeader(label: 'population', value: _formatNumber(incident.popP50!)),
+            // Show p10/p90 bands when available, otherwise p50 only
+            if (incident.hasBands)
+              ForecastBands(
+                p10: incident.popP10!,
+                p50: incident.popP50 ?? incident.popP10!,
+                p90: incident.popP90!,
+                locale: locale,
+              )
+            else if (incident.popP50 != null)
+              DotLeader(
+                  label: PulseStrings.get('forecast.population', locale),
+                  value: _formatNumber(incident.popP50!)),
             if (incident.radiusKmP50 != null)
               DotLeader(label: 'radius', value: '${incident.radiusKmP50!.toStringAsFixed(1)} km'),
             if (incident.durationMinP50 != null)
               DotLeader(
                 label: 'duration p50',
-                value: '${incident.durationMinP50! ~/ 60}h ${incident.durationMinP50! % 60}m',
+                value:
+                    '${incident.durationMinP50! ~/ 60}h ${incident.durationMinP50! % 60}m',
               ),
             const SizedBox(height: PulseSpace.x2),
             Row(
@@ -115,7 +151,7 @@ class IncidentCard extends StatelessWidget {
               StatusPill(label: incident.status.toUpperCase(), color: color, dense: true),
               const SizedBox(width: PulseSpace.x3),
               Text(
-                retracted ? 'retracted · audit logged' : 'tracking · responders dispatched',
+                _statusFooter(incident),
                 style: PulseTheme.dataSm(color: PulseColors.mist),
               ),
             ]),

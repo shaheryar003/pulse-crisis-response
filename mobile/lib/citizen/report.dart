@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 import '../services/api.dart';
 import '../services/offline.dart';
 import '../shared/auth.dart';
+import '../shared/strings.dart';
 import '../shared/theme.dart';
 import '../shared/tokens.dart';
 import '../shared/widgets/cta_button.dart';
@@ -48,7 +49,7 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
           setState(() {});
           return;
         }
-        setState(() => _error = 'Location permission denied — please drop a pin manually.');
+        setState(() => _error = PulseStrings.get('citizen.report.gps_denied'));
         return;
       }
       _position = await Geolocator.getCurrentPosition();
@@ -58,7 +59,7 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
         _position = _demoPosition();
         setState(() {});
       } else {
-        setState(() => _error = 'Location error: $e');
+        setState(() => _error = '${PulseStrings.get('citizen.report.gps_error')}: $e');
       }
     } finally {
       setState(() => _busy = false);
@@ -77,7 +78,7 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
 
   Future<void> _submit() async {
     if (_position == null) {
-      setState(() => _error = 'Please capture GPS coordinates first.');
+      setState(() => _error = PulseStrings.get('citizen.report.gps_required'));
       return;
     }
     setState(() {
@@ -106,7 +107,7 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
       _photoPath = null;
     } catch (e) {
       await OfflineQueue.enqueue(payload);
-      setState(() => _error = 'Offline — queued for retry. ($e)');
+      setState(() => _error = '${PulseStrings.get('citizen.report.offline_queued')} ($e)');
     } finally {
       setState(() => _busy = false);
     }
@@ -119,9 +120,9 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Report an incident', style: PulseTheme.display(size: 26)),
+          Text(PulseStrings.get('citizen.report.title'), style: PulseTheme.display(size: 26)),
           const SizedBox(height: PulseSpace.x1),
-          const EmDashLeader('Your report routes to Pulse command in real time'),
+          EmDashLeader(PulseStrings.get('citizen.report.subtitle')),
           const SizedBox(height: PulseSpace.x6),
           const SectionLabel(text: 'Category'),
           const SizedBox(height: PulseSpace.x2),
@@ -162,7 +163,7 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
             Expanded(
               child: _EvidenceCard(
                 marker: '◎',
-                label: 'CAPTURE GPS',
+                label: PulseStrings.get('citizen.report.gps_label'),
                 confirmed: _position != null
                     ? '${_position!.latitude.toStringAsFixed(4)}, ${_position!.longitude.toStringAsFixed(4)}\n±${_position!.accuracy.round()}m'
                     : null,
@@ -173,14 +174,18 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
             Expanded(
               child: _EvidenceCard(
                 marker: '⊕',
-                label: 'ATTACH PHOTO',
+                label: PulseStrings.get('citizen.report.photo_label'),
                 confirmed: _photoPath != null ? 'photo attached' : null,
                 onTap: _busy ? null : _attachPhoto,
               ),
             ),
           ]),
           const SizedBox(height: PulseSpace.x6),
-          CtaButton(label: 'Submit report', loading: _busy, onPressed: _busy ? null : _submit),
+          CtaButton(
+            label: PulseStrings.get('citizen.report.submit'),
+            loading: _busy,
+            onPressed: _busy ? null : _submit,
+          ),
           if (_result != null) ...[
             const SizedBox(height: PulseSpace.x4),
             Container(
@@ -191,7 +196,10 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
                 borderRadius: BorderRadius.circular(PulseRadii.sm),
               ),
               child: Row(children: [
-                StatusPill(label: 'ACCEPTED', color: PulseColors.lime, dense: true),
+                StatusPill(
+                    label: PulseStrings.get('citizen.report.accepted'),
+                    color: PulseColors.lime,
+                    dense: true),
                 const SizedBox(width: PulseSpace.x3),
                 Expanded(child: Text(_result!, style: PulseTheme.dataSm(color: PulseColors.lime))),
               ]),
@@ -210,9 +218,9 @@ class _CitizenReportPageState extends State<CitizenReportPage> {
             ),
           ],
           const SizedBox(height: PulseSpace.x6),
-          const EmDashLeader('Your phone number is hashed before processing'),
+          EmDashLeader(PulseStrings.get('citizen.report.privacy_hash')),
           const SizedBox(height: PulseSpace.x1),
-          const EmDashLeader('False reports degrade your trust score'),
+          EmDashLeader(PulseStrings.get('citizen.report.privacy_trust')),
         ],
       ),
     );
@@ -226,20 +234,29 @@ class _CategoryChip extends StatelessWidget {
   const _CategoryChip({required this.label, required this.selected, required this.onTap});
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(PulseRadii.sm),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x3, vertical: PulseSpace.x2),
-        decoration: BoxDecoration(
-          color: selected ? PulseColors.signal.withValues(alpha: 0.10) : PulseColors.ink800,
-          border: Border.all(color: selected ? PulseColors.signal : PulseColors.hairline, width: 1),
-          borderRadius: BorderRadius.circular(PulseRadii.sm),
-        ),
-        child: Text(
-          label,
-          style: PulseTheme.label(color: selected ? PulseColors.signal : PulseColors.stone)
-              .copyWith(fontSize: 11),
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: label,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(PulseRadii.sm),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 44),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x3, vertical: PulseSpace.x3),
+            decoration: BoxDecoration(
+              color: selected ? PulseColors.signal.withValues(alpha: 0.10) : PulseColors.ink800,
+              border: Border.all(
+                  color: selected ? PulseColors.signal : PulseColors.hairline, width: 1),
+              borderRadius: BorderRadius.circular(PulseRadii.sm),
+            ),
+            child: Text(
+              label,
+              style: PulseTheme.label(color: selected ? PulseColors.signal : PulseColors.stone)
+                  .copyWith(fontSize: 11),
+            ),
+          ),
         ),
       ),
     );
@@ -257,36 +274,45 @@ class _EvidenceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasValue = confirmed != null;
     final color = hasValue ? PulseColors.lime : PulseColors.signal;
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(PulseRadii.md),
-      child: Container(
-        padding: const EdgeInsets.all(PulseSpace.x4),
-        decoration: BoxDecoration(
-          color: PulseColors.ink800,
-          border: Border.all(color: hasValue ? color : PulseColors.hairline, width: 1),
-          borderRadius: BorderRadius.circular(PulseRadii.md),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(children: [
-              Text(marker, style: PulseTheme.data(size: 16, color: color, weight: FontWeight.w700)),
-              const SizedBox(width: PulseSpace.x2),
-              Text(label, style: PulseTheme.label(color: color).copyWith(fontSize: 11)),
-            ]),
-            const SizedBox(height: PulseSpace.x3),
-            Container(height: 1, color: PulseColors.hairline),
-            const SizedBox(height: PulseSpace.x3),
-            if (hasValue)
+    return Semantics(
+      button: true,
+      label: label,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(PulseRadii.md),
+        child: Container(
+          padding: const EdgeInsets.all(PulseSpace.x4),
+          decoration: BoxDecoration(
+            color: PulseColors.ink800,
+            border: Border.all(color: hasValue ? color : PulseColors.hairline, width: 1),
+            borderRadius: BorderRadius.circular(PulseRadii.md),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Row(children: [
-                Text('✓', style: PulseTheme.data(size: 12, color: color, weight: FontWeight.w700)),
+                Text(marker,
+                    style: PulseTheme.data(size: 16, color: color, weight: FontWeight.w700)),
                 const SizedBox(width: PulseSpace.x2),
-                Expanded(child: Text(confirmed!, style: PulseTheme.dataSm(color: PulseColors.pearl))),
-              ])
-            else
-              Text('tap to capture', style: PulseTheme.dataXs()),
-          ],
+                Text(label, style: PulseTheme.label(color: color).copyWith(fontSize: 11)),
+              ]),
+              const SizedBox(height: PulseSpace.x3),
+              Container(height: 1, color: PulseColors.hairline),
+              const SizedBox(height: PulseSpace.x3),
+              if (hasValue)
+                Row(children: [
+                  Text('✓',
+                      style:
+                          PulseTheme.data(size: 12, color: color, weight: FontWeight.w700)),
+                  const SizedBox(width: PulseSpace.x2),
+                  Expanded(
+                      child:
+                          Text(confirmed!, style: PulseTheme.dataSm(color: PulseColors.pearl))),
+                ])
+              else
+                Text('tap to capture', style: PulseTheme.dataXs()),
+            ],
+          ),
         ),
       ),
     );

@@ -7,6 +7,8 @@ class AlertItem {
   final String status;
   final String issuedAt;
   final String? retractedAt;
+  final bool requiresHumanApproval;
+  final String? incidentType;
 
   AlertItem({
     required this.id,
@@ -17,6 +19,8 @@ class AlertItem {
     required this.status,
     required this.issuedAt,
     this.retractedAt,
+    this.requiresHumanApproval = false,
+    this.incidentType,
   });
 
   bool get isRetracted => status == 'retracted';
@@ -30,5 +34,8 @@ class AlertItem {
         status: j['status'] as String? ?? 'staged',
         issuedAt: j['issued_at'] as String? ?? '',
         retractedAt: j['retracted_at'] as String?,
+        requiresHumanApproval:
+            (j['requires_human_approval'] as bool?) ?? false,
+        incidentType: j['incident_type'] as String?,
       );
 }

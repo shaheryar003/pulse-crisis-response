@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "WebFetch(domain:antigravity.google)"
+      "WebFetch(domain:antigravity.google)",
+      "Bash(flutter analyze *)",
+      "Bash(\"c:/Projects/pulse-crisis-response/.flutter-sdk/bin/flutter\" analyze *)",
+      "Read(//c/flutter/**)",
+      "Bash(python3 -c ' *)"
     ]
   }
 }

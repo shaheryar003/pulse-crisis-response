@@ -3,6 +3,8 @@
 /// Hand-picked semantic palette. No seed-color generator. Crisis-context dark
 /// aesthetic with editorial gravitas. Tokens here are the single source of
 /// truth — everything else references them.
+library;
+
 import 'package:flutter/material.dart';
 
 class PulseColors {

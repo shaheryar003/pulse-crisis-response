@@ -1,0 +1,53 @@
+{
+  "agent": "pm",
+  "sprint": 9,
+  "closed_at": "2026-05-20T15:15:00Z",
+  "verdict": "pass",
+  "summary": "Sprint 9 UX/quality pass complete. Zero flutter analyze issues. 17/17 backend tests pass. 4/4 scenarios validate. All P1 touch-target violations fixed. Full EN+UR string catalog created. 5 new widgets delivered. 2 missing Sprint-5 screens wired. 4 runtime bugs fixed post-audit including paint crash, zone null, silent pipeline, and simulation bleed.",
+  "tasks_completed": [
+    "9.0  strings.dart — PulseStrings catalog (52 EN + 52 UR keys)",
+    "9.1  tokens.dart — library directive (dangling_library_doc_comments fixed)",
+    "9.2  theme.dart — const binding (prefer_const_declarations fixed)",
+    "9.3  util_bar.dart — 48dp touch targets + Semantics on icon buttons and tabs",
+    "9.4  trace_event_card.dart — all 7 tier accent colors distinct",
+    "9.5  map_pin.dart — zone parameter + Semantics label",
+    "9.6  severity_pill.dart — Semantics wrapper",
+    "9.7  incident_card.dart — ForecastBands widget, spreadRisk display, locale param",
+    "9.8  models/dispatch.dart — incidentSeverity, destinationZone, destinationLabel",
+    "9.9  models/alert.dart — requiresHumanApproval, incidentType",
+    "9.10 models/incident.dart — Tier-4 uncertainty bands (p10/p50/p90)",
+    "9.11 widget/error_box.dart — new reusable error widget",
+    "9.12 widget/approval_gate_badge.dart — new pulsing approval badge",
+    "9.13 widget/forecast_bands.dart — new P10/P50/P90 bar widget",
+    "9.14 widget/degraded_mode_banner.dart — new degraded signal banner",
+    "9.15 widget/audit_chain_panel.dart — new read-only Tier-7 audit chain widget",
+    "9.16 citizen/alerts.dart — ErrorBox, structured channel accent, retraction copy, approval badge; paint crash fixed",
+    "9.17 citizen/report.dart — 44dp chips, Semantics, all strings via PulseStrings",
+    "9.18 responder/queue.dart — ErrorBox, destination display, severity from model, 48dp buttons",
+    "9.19 command/dashboard.dart — error states, WS reconnect, 18-key trace extraction, DegradedModeBanner, incident detail pane, AuditChainPanel",
+    "9.20 citizen/verify.dart — new Sprint-5 verify-nearby screen",
+    "9.21 responder/status.dart — new Sprint-5 availability reporting screen",
+    "9.22 role_router.dart — CitizenShell 4-tab + ResponderShell 2-tab wired",
+    "9.23 backend/geo.py — nearest_zone() fallback for coords outside zone polygons",
+    "9.24 backend/ingest/citizen.py — nearest_zone fallback in CitizenReportAgent",
+    "9.25 backend/api/signals.py — POST /signals/citizen now runs full pipeline",
+    "9.26 backend/agents/commander.py — is-not-None guard replaces falsy-or for all signal sources"
+  ],
+  "final_metrics": {
+    "flutter_analyze_issues": 0,
+    "tests_passing": 17,
+    "scenarios_validating": 4,
+    "mobile_dart_files": 25,
+    "string_catalog_keys": 52,
+    "new_widgets": 5,
+    "new_screens": 2,
+    "runtime_bugs_fixed": 4,
+    "p1_touch_target_violations": 0
+  },
+  "audit_artifacts": [
+    "artifacts/sprint9/audit/ux-report.json",
+    "artifacts/sprint9/audit/a11y-report.json",
+    "artifacts/sprint9/audit/i18n-report.json",
+    "artifacts/sprint9/ux-auditor/post-report.json"
+  ]
+}

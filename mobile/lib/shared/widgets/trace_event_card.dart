@@ -49,14 +49,16 @@ class _TraceEventCardState extends State<TraceEventCard> with SingleTickerProvid
   }
 
   Color _tierAccent() {
+    // Each tier has a distinct color — T1 (stone) ≠ T6 (lime) so ingest and
+    // act events are visually separable at high event velocity.
     return switch (widget.tier) {
-      1 => PulseColors.signal,
-      2 => PulseColors.amber,
-      3 => PulseColors.lime,
-      4 => PulseColors.saffron,
-      5 => PulseColors.crimson,
-      6 => PulseColors.signal,
-      7 => PulseColors.mist,
+      1 => PulseColors.stone,    // Ingest — neutral input
+      2 => PulseColors.amber,    // Fusion — clustering
+      3 => PulseColors.signal,   // Classify — decision
+      4 => PulseColors.saffron,  // Forecast — uncertainty
+      5 => PulseColors.crimson,  // Coordinate — priority
+      6 => PulseColors.lime,     // Act — action taken
+      7 => PulseColors.mist,     // Recover — audit
       _ => PulseColors.dim,
     };
   }

@@ -62,11 +62,11 @@ class Commander:
         sensor = SensorAgent(self.sink, run_id=run_id)
         citizen = CitizenReportAgent(self.sink, run_id=run_id)
 
-        social_signals = social.run(list(social_posts or loader.social_posts()))
+        social_signals = social.run(list(social_posts) if social_posts is not None else list(loader.social_posts()))
         weather_signals = weather.run(overrides=weather_overrides, api_mode=weather_mode)
         traffic_signals = traffic.run(api_mode="live", overlay=traffic_overlay)
         sensor_signals = sensor.run(list(sensor_readings) if sensor_readings is not None else None)
-        citizen_signals = citizen.run(list(citizen_reports or []))
+        citizen_signals = citizen.run(list(citizen_reports) if citizen_reports is not None else [])
 
         all_signals = (
             list(social_signals)

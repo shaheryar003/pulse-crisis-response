@@ -56,3 +56,5 @@ secrets.json
 # -- Logs --
 *.log
 logs/
+
+.flutter-sdk/

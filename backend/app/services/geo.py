@@ -66,6 +66,18 @@ def zone_for(lat: float | None, lon: float | None) -> str | None:
     return None
 
 
+def nearest_zone(lat: float, lon: float) -> str | None:
+    """Nearest zone centroid by Haversine — fallback when coords fall outside all polygons."""
+    best_zid, best_dist = None, float("inf")
+    for zid, _, rings in load_zones():
+        cx, cy = _polygon_centroid(rings)
+        d = haversine_km(lat, lon, cy, cx)
+        if d < best_dist:
+            best_dist = d
+            best_zid = zid
+    return best_zid
+
+
 def _polygon_centroid(rings: list[list[tuple[float, float]]]) -> tuple[float, float]:
     """Centroid of the outer ring (cx_lon, cy_lat)."""
     if not rings:
