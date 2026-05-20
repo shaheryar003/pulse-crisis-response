@@ -14,9 +14,9 @@ class Sparkbar extends StatelessWidget {
     super.key,
     required this.value,
     this.filledColor = PulseColors.signal,
-    this.emptyColor = PulseColors.ash,
+    this.emptyColor = PulseColors.hairlineStrong,
     this.cells = 10,
-    this.cellWidth = 5,
+    this.cellWidth = 6,
     this.height = 12,
   });
 
@@ -29,16 +29,19 @@ class Sparkbar extends StatelessWidget {
       children: List.generate(cells, (i) {
         final isFilled = i < filled;
         return Padding(
-          padding: EdgeInsets.only(right: i == cells - 1 ? 0 : 1),
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 200 + (i * 24)),
-              width: cellWidth,
-              height: height,
-              decoration: BoxDecoration(
-                color: isFilled ? filledColor : emptyColor.withValues(alpha: 0.4),
-                borderRadius: BorderRadius.circular(PulseRadii.xs),
-              ),
+          padding: EdgeInsets.only(right: i == cells - 1 ? 0 : 2),
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 200 + (i * 24)),
+            width: cellWidth,
+            height: height,
+            decoration: BoxDecoration(
+              color: isFilled ? filledColor : emptyColor.withValues(alpha: 0.5),
+              borderRadius: BorderRadius.circular(PulseRadii.xs),
+              boxShadow: isFilled && filledColor == PulseColors.crimson
+                  ? [BoxShadow(color: PulseColors.crimson.withValues(alpha: 0.5), blurRadius: 4)]
+                  : null,
             ),
+          ),
         );
       }),
     );

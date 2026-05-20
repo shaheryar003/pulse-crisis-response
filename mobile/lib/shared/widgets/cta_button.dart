@@ -19,6 +19,7 @@ class CtaButton extends StatelessWidget {
     this.fullWidth = true,
     this.color,
   });
+
   @override
   Widget build(BuildContext context) {
     final c = color ?? PulseColors.signal;
@@ -35,7 +36,7 @@ class CtaButton extends StatelessWidget {
           if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
             return BorderSide(color: c, width: 1.5);
           }
-          return BorderSide(color: c, width: 1);
+          return BorderSide(color: c.withValues(alpha: 0.5), width: 1);
         }),
         shape: WidgetStateProperty.all(const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(PulseRadii.xl)),
@@ -49,6 +50,7 @@ class CtaButton extends StatelessWidget {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (loading)
             SizedBox(

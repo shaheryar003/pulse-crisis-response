@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme.dart';
 import '../tokens.dart';
 
-/// Label · · · · · value. The dot leader between is a CustomPaint of mono dots.
+/// Label · · · · · value. The workhorse of data display.
 class DotLeader extends StatelessWidget {
   final String label;
   final String value;
@@ -25,7 +25,7 @@ class DotLeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.baseline,
         textBaseline: TextBaseline.alphabetic,
         children: [
-          Text(label.toUpperCase(), style: PulseTheme.label()),
+          Text(label.toUpperCase(), style: PulseTheme.label(color: PulseColors.mist).copyWith(fontSize: 10, letterSpacing: 1.5)),
           const SizedBox(width: PulseSpace.x2),
           Expanded(
             child: Padding(
@@ -37,7 +37,7 @@ class DotLeader extends StatelessWidget {
             ),
           ),
           const SizedBox(width: PulseSpace.x2),
-          Text(value, style: valueStyle ?? PulseTheme.data(size: 12, color: valueColor ?? PulseColors.pearl)),
+          Text(value, style: valueStyle ?? PulseTheme.data(size: 13, color: valueColor ?? PulseColors.pearl)),
         ],
       ),
     );
@@ -47,9 +47,9 @@ class DotLeader extends StatelessWidget {
 class _DotLeaderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = PulseColors.ash;
-    const dotR = 0.7;
-    const spacing = 4.0;
+    final paint = Paint()..color = PulseColors.hairlineStrong;
+    const dotR = 0.8;
+    const spacing = 5.0;
     double x = 0;
     while (x < size.width) {
       canvas.drawCircle(Offset(x, size.height / 2), dotR, paint);

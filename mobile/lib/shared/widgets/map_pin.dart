@@ -40,14 +40,30 @@ class _MapPinState extends State<MapPin> with SingleTickerProviderStateMixin {
       child: AnimatedBuilder(
         animation: _ctl,
         builder: (_, __) {
-          final haloOpacity = 0.04 + 0.08 * _ctl.value;
+          final haloOpacity = 0.04 + 0.12 * _ctl.value;
+          
+          List<BoxShadow> glow = [];
+          if (widget.active) {
+            if (widget.severity == 5) {
+              glow = [
+                BoxShadow(color: color.withValues(alpha: 0.60 + 0.20 * _ctl.value), blurRadius: 32 + 16 * _ctl.value),
+              ];
+            } else if (widget.severity == 4) {
+              glow = [
+                BoxShadow(color: color.withValues(alpha: 0.35 + 0.15 * _ctl.value), blurRadius: 24 + 8 * _ctl.value),
+              ];
+            } else if (widget.severity >= 2) {
+              glow = PulseGlow.severity(widget.severity);
+            }
+          }
+
           return Stack(
             alignment: Alignment.center,
             children: [
               if (widget.severity >= 4 && widget.active)
                 Container(
-                  width: 56,
-                  height: 56,
+                  width: 56 + 16 * _ctl.value,
+                  height: 56 + 16 * _ctl.value,
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: haloOpacity),
                     shape: BoxShape.circle,
@@ -61,21 +77,15 @@ class _MapPinState extends State<MapPin> with SingleTickerProviderStateMixin {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.9),
+                      color: color,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(16),
                         topRight: Radius.circular(16),
                         bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
+                        bottomRight: Radius.circular(2),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: color.withValues(alpha: 0.4),
-                          blurRadius: 8,
-                          offset: const Offset(2, 2),
-                        )
-                      ],
-                      border: Border.all(color: PulseColors.pearl.withValues(alpha: 0.8), width: 1.5),
+                      boxShadow: glow,
+                      border: Border.all(color: PulseColors.ink900.withValues(alpha: 0.6), width: 1.5),
                     ),
                     alignment: Alignment.center,
                     child: Transform.rotate(
@@ -83,7 +93,7 @@ class _MapPinState extends State<MapPin> with SingleTickerProviderStateMixin {
                       child: Text(
                         '${widget.severity}',
                         style: PulseTheme.data(
-                            size: 14, color: PulseColors.ink900, weight: FontWeight.w800),
+                            size: 15, color: PulseColors.ink900, weight: FontWeight.w800),
                       ),
                     ),
                   ),

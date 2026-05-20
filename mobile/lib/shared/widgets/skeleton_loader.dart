@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
 import '../tokens.dart';
 
 class SkeletonLoader extends StatefulWidget {
@@ -11,7 +10,7 @@ class SkeletonLoader extends StatefulWidget {
     super.key,
     this.width = double.infinity,
     this.height = 48,
-    this.borderRadius = PulseRadii.md,
+    this.borderRadius = PulseRadii.xxl,
   });
 
   @override
@@ -20,7 +19,6 @@ class SkeletonLoader extends StatefulWidget {
 
 class _SkeletonLoaderState extends State<SkeletonLoader> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-  late final Animation<double> _animation;
 
   @override
   void initState() {
@@ -29,9 +27,6 @@ class _SkeletonLoaderState extends State<SkeletonLoader> with SingleTickerProvid
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     )..repeat();
-    _animation = Tween<double>(begin: -2, end: 2).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOutSine),
-    );
   }
 
   @override
@@ -43,27 +38,41 @@ class _SkeletonLoaderState extends State<SkeletonLoader> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: _animation,
+      animation: _controller,
       builder: (context, child) {
+        // Shift gradient horizontally to create a 45deg sweep
+        final val = _controller.value;
         return Container(
           width: widget.width,
           height: widget.height,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(widget.borderRadius),
             gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+              begin: const Alignment(-2.0, -1.0),
+              end: const Alignment(2.0, 1.0),
               stops: const [0.0, 0.5, 1.0],
               colors: [
                 PulseColors.ink800,
-                PulseColors.ink700.withValues(alpha: 0.5),
+                PulseColors.ink700,
                 PulseColors.ink800,
               ],
-              transform: GradientRotation(_animation.value),
+              transform: _TranslateGradient(val),
             ),
           ),
         );
       },
     );
+  }
+}
+
+class _TranslateGradient extends GradientTransform {
+  final double value;
+  const _TranslateGradient(this.value);
+
+  @override
+  Matrix4? transform(Rect bounds, {TextDirection? textDirection}) {
+    // Moves the gradient from -width to +width over the course of the animation
+    final dx = bounds.width * (value * 2 - 1);
+    return Matrix4.translationValues(dx, 0.0, 0.0);
   }
 }
