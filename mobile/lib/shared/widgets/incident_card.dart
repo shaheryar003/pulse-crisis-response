@@ -45,27 +45,31 @@ class IncidentCard extends StatelessWidget {
     final typeLabel = incident.type.replaceAll('_', ' ').toUpperCase();
     final idShort = incident.id.length > 10 ? incident.id.substring(0, 10) : incident.id;
 
-    final inner = Container(
+    final inner = AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOut,
       margin: const EdgeInsets.only(bottom: PulseSpace.x2),
       decoration: BoxDecoration(
-        color: PulseColors.ink800.withValues(alpha: 0.85),
-        borderRadius: BorderRadius.circular(PulseRadii.xl),
-        border: Border.all(color: selected ? PulseColors.signal : PulseColors.hairline, width: selected ? 1.5 : 1),
-        boxShadow: [
-          if (selected)
-            BoxShadow(color: PulseColors.signal.withValues(alpha: 0.15), blurRadius: 16, offset: const Offset(0, 4))
-          else
-            const BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 2)),
-        ],
+        color: PulseColors.ink800,
+        borderRadius: BorderRadius.circular(PulseRadii.xxl),
+        border: Border(
+          left: BorderSide(color: selected ? color : PulseColors.hairlineStrong, width: selected ? 4 : 1),
+          top: BorderSide(color: selected ? color.withValues(alpha: 0.5) : PulseColors.hairlineStrong, width: 1),
+          right: BorderSide(color: selected ? color.withValues(alpha: 0.5) : PulseColors.hairlineStrong, width: 1),
+          bottom: BorderSide(color: selected ? color.withValues(alpha: 0.5) : PulseColors.hairlineStrong, width: 1),
+        ),
+        boxShadow: selected
+            ? PulseGlow.severity(incident.severity)
+            : const [BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 2))],
       ),
-      padding: const EdgeInsets.fromLTRB(PulseSpace.x4, PulseSpace.x4, PulseSpace.x4, PulseSpace.x4),
+      padding: const EdgeInsets.all(PulseSpace.x4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SeverityPill(severity: incident.severity, withLabel: false, pulse: !retracted),
+              SeverityPill(severity: incident.severity, withLabel: false, pulse: !retracted && selected),
               const SizedBox(width: PulseSpace.x3),
               Expanded(
                 child: Column(
@@ -115,7 +119,6 @@ class IncidentCard extends StatelessWidget {
             const SizedBox(height: PulseSpace.x3),
             Container(height: 1, color: PulseColors.hairline),
             const SizedBox(height: PulseSpace.x3),
-            // Show p10/p90 bands when available, otherwise p50 only
             if (incident.hasBands)
               ForecastBands(
                 p10: incident.popP10!,
@@ -132,8 +135,7 @@ class IncidentCard extends StatelessWidget {
             if (incident.durationMinP50 != null)
               DotLeader(
                 label: 'duration p50',
-                value:
-                    '${incident.durationMinP50! ~/ 60}h ${incident.durationMinP50! % 60}m',
+                value: '${incident.durationMinP50! ~/ 60}h ${incident.durationMinP50! % 60}m',
               ),
             const SizedBox(height: PulseSpace.x2),
             Row(

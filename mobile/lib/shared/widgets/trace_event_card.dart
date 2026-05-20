@@ -4,7 +4,6 @@ import '../theme.dart';
 import '../tokens.dart';
 
 /// Trace event card — the showpiece for the Command Center.
-/// Header shows tier badge + agent + millisecond timestamp.
 class TraceEventCard extends StatefulWidget {
   final int tier;
   final String agent;
@@ -33,7 +32,7 @@ class TraceEventCard extends StatefulWidget {
 class _TraceEventCardState extends State<TraceEventCard> with SingleTickerProviderStateMixin {
   late final AnimationController _ctl = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 800),
+    duration: const Duration(milliseconds: 400),
   );
 
   @override
@@ -48,37 +47,24 @@ class _TraceEventCardState extends State<TraceEventCard> with SingleTickerProvid
     super.dispose();
   }
 
-  Color _tierAccent() {
-    // Each tier has a distinct color — T1 (stone) ≠ T6 (lime) so ingest and
-    // act events are visually separable at high event velocity.
-    return switch (widget.tier) {
-      1 => PulseColors.stone,    // Ingest — neutral input
-      2 => PulseColors.amber,    // Fusion — clustering
-      3 => PulseColors.signal,   // Classify — decision
-      4 => PulseColors.saffron,  // Forecast — uncertainty
-      5 => PulseColors.crimson,  // Coordinate — priority
-      6 => PulseColors.lime,     // Act — action taken
-      7 => PulseColors.mist,     // Recover — audit
-      _ => PulseColors.dim,
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
-    final accent = _tierAccent();
+    final accent = PulseColors.tier(widget.tier);
     return AnimatedBuilder(
       animation: _ctl,
       builder: (_, child) {
+        // Flash border for 200ms when new
+        final double flashProgress = _ctl.value < 0.5 ? _ctl.value * 2 : (1.0 - _ctl.value) * 2;
         final borderColor = widget.isNew
-            ? Color.lerp(accent, PulseColors.hairline, _ctl.value)!
-            : PulseColors.hairline;
+            ? Color.lerp(PulseColors.hairlineStrong, accent, flashProgress)!
+            : PulseColors.hairlineStrong;
         
         final content = Container(
           margin: const EdgeInsets.only(bottom: PulseSpace.x3),
           decoration: BoxDecoration(
-            color: PulseColors.ink800.withValues(alpha: 0.85),
+            color: PulseColors.ink800,
             border: Border.all(color: borderColor, width: 1),
-            borderRadius: BorderRadius.circular(PulseRadii.xl),
+            borderRadius: BorderRadius.circular(PulseRadii.xxl),
             boxShadow: const [
               BoxShadow(color: Colors.black26, blurRadius: 6, offset: Offset(0, 2)),
             ],
@@ -107,20 +93,20 @@ class _TraceEventCardState extends State<TraceEventCard> with SingleTickerProvid
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // header with tier badge inset into top border style
           Container(
             padding: const EdgeInsets.fromLTRB(PulseSpace.x3, PulseSpace.x3, PulseSpace.x3, PulseSpace.x2),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x2, vertical: PulseSpace.x0_5),
+                  padding: const EdgeInsets.symmetric(horizontal: PulseSpace.x2, vertical: 2),
                   decoration: BoxDecoration(
-                    border: Border.all(color: _tierAccent(), width: 1),
-                    borderRadius: BorderRadius.circular(PulseRadii.md),
+                    color: accent.withValues(alpha: 0.1),
+                    border: Border.all(color: accent, width: 1),
+                    borderRadius: BorderRadius.circular(PulseRadii.sm),
                   ),
                   child: Text(
                     'T${widget.tier}',
-                    style: PulseTheme.dataXs(color: _tierAccent()),
+                    style: PulseTheme.dataXs(color: accent),
                   ),
                 ),
                 const SizedBox(width: PulseSpace.x2),
@@ -136,11 +122,13 @@ class _TraceEventCardState extends State<TraceEventCard> with SingleTickerProvid
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(children: [
-                  Text('▸', style: PulseTheme.data(size: 12, color: _tierAccent())),
+                  Text('▸', style: PulseTheme.data(size: 12, color: accent)),
                   const SizedBox(width: PulseSpace.x2),
-                  Text(widget.decision, style: PulseTheme.data(size: 12, color: PulseColors.stone)),
+                  Expanded(
+                    child: Text(widget.decision, style: PulseTheme.data(size: 12, color: PulseColors.stone), overflow: TextOverflow.ellipsis),
+                  ),
                   if (widget.confidence != null) ...[
-                    const Spacer(),
+                    const SizedBox(width: PulseSpace.x2),
                     Text('conf', style: PulseTheme.label()),
                     const SizedBox(width: PulseSpace.x1),
                     Text(widget.confidence!.toStringAsFixed(2),
@@ -148,27 +136,27 @@ class _TraceEventCardState extends State<TraceEventCard> with SingleTickerProvid
                   ],
                 ]),
                 if (widget.details != null && widget.details!.isNotEmpty) ...[
-                  const SizedBox(height: PulseSpace.x2),
+                  const SizedBox(height: PulseSpace.x3),
                   Container(
-                    padding: const EdgeInsets.all(PulseSpace.x2),
+                    padding: const EdgeInsets.all(PulseSpace.x3),
                     decoration: BoxDecoration(
                       border: Border.all(color: PulseColors.hairline),
-                      color: PulseColors.ink900.withValues(alpha: 0.6),
-                      borderRadius: BorderRadius.circular(PulseRadii.md),
+                      color: PulseColors.ink900.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(PulseRadii.xl),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (widget.hypothesis != null) ...[
                           Text(widget.hypothesis!.toUpperCase(),
-                              style: PulseTheme.data(size: 12, color: _tierAccent(), weight: FontWeight.w700)),
-                          const SizedBox(height: 4),
+                              style: PulseTheme.data(size: 11, color: accent, weight: FontWeight.w700)),
+                          const SizedBox(height: 6),
                           Container(height: 1, color: PulseColors.hairline),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 6),
                         ],
                         for (final entry in widget.details!.entries)
                           Padding(
-                            padding: const EdgeInsets.only(top: PulseSpace.x0_5),
+                            padding: const EdgeInsets.only(top: PulseSpace.x1),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.baseline,
                               textBaseline: TextBaseline.alphabetic,
