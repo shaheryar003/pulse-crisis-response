@@ -51,7 +51,7 @@ class _SkeletonLoaderState extends State<SkeletonLoader> with SingleTickerProvid
               begin: const Alignment(-2.0, -1.0),
               end: const Alignment(2.0, 1.0),
               stops: const [0.0, 0.5, 1.0],
-              colors: [
+              colors: const [
                 PulseColors.ink800,
                 PulseColors.ink700,
                 PulseColors.ink800,

@@ -167,7 +167,7 @@ class _SignInPageState extends State<SignInPage> {
                           ],
                         ),
                         const SizedBox(height: PulseSpace.x2),
-                        DotLeader(label: 'systems', value: 'Urban Crisis Response · Islamabad'),
+                        const DotLeader(label: 'systems', value: 'Urban Crisis Response · Islamabad'),
                         const SizedBox(height: PulseSpace.x8),
                         _Field(label: 'API ENDPOINT', controller: _api, hint: 'http://localhost:8000', mono: true),
                         const SizedBox(height: PulseSpace.x4),
